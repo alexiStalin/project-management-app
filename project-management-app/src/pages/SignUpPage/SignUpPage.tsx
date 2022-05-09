@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { fetchSignIn, fetchSignUp } from '../../store/autorizationSlice';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchSignUp } from '../../store/autorizationSlice';
 import s from './SignUpPage.module.css';
 
 type Data = {
@@ -23,12 +24,15 @@ const SignUpPage = () => {
     shouldFocusError: false,
   });
 
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
 
   const onSubmit = (data: Data) => {
     console.log(data);
     dispatch(fetchSignUp(data));
-    // reset();
+    reset();
+    navigate('../login', { replace: true });
   };
 
   return (
@@ -45,6 +49,7 @@ const SignUpPage = () => {
             type="text"
             placeholder="Name"
             name="name"
+            autoComplete="off"
           />
           <span className={s.messageError}>{errors?.login?.message}</span>
           <input
@@ -55,6 +60,7 @@ const SignUpPage = () => {
             type="text"
             placeholder="Login"
             name="login"
+            autoComplete="off"
           />
           <span className={s.messageError}>{errors?.password?.message}</span>
           <input
@@ -65,6 +71,7 @@ const SignUpPage = () => {
             type="password"
             placeholder="Password"
             name="password"
+            autoComplete="off"
           />
           <button type="submit" disabled={!isValid}>
             create

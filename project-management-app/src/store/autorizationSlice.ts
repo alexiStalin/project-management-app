@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import jwt_decode from 'jwt-decode';
 
 const initialState: InitialState = {
   auth: false,
@@ -34,11 +35,12 @@ type Token = {
   token: string;
 };
 
+const _apiBase = 'https://deploy-board.herokuapp.com';
+
 const fetchSignUp = createAsyncThunk<User, UserAuthorization>(
   'authorization/signin',
   async function (userGetToken, { rejectWithValue }) {
     try {
-      const _apiBase = 'https://deploy-board.herokuapp.com';
       const response = await fetch(`${_apiBase}/signup`, {
         method: 'POST',
         headers: {
@@ -63,7 +65,6 @@ const fetchSignIn = createAsyncThunk<Token, UserGetToken>(
   'authorization/signup',
   async function (userAuthorization, { rejectWithValue }) {
     try {
-      const _apiBase = 'https://deploy-board.herokuapp.com';
       const response = await fetch(`${_apiBase}/signin`, {
         method: 'POST',
         headers: {
@@ -84,6 +85,34 @@ const fetchSignIn = createAsyncThunk<Token, UserGetToken>(
   }
 );
 
+const fetchUserByToken = createAsyncThunk<User, string>(
+  'authorization/gitUserByToken',
+  async function (token, { rejectWithValue }) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const user: any = jwt_decode(token);
+      const response = await fetch(`${_apiBase}/users/${user.userId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Could not fetch, status: ${response.status}`);
+      }
+      const data = await response.json();
+      localStorage.setItem('token', token);
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 const AuthorizationSlice = createSlice({
   name: 'authorization',
   initialState,
@@ -92,7 +121,10 @@ const AuthorizationSlice = createSlice({
       state.auth = true;
     },
     logOut: (state) => {
+      localStorage.clear();
       state.auth = false;
+      state.token = '';
+      state.user = {};
     },
     tokenAdd: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
@@ -108,8 +140,16 @@ const AuthorizationSlice = createSlice({
       })
       .addCase(fetchSignIn.fulfilled, (state, action: PayloadAction<Token>) => {
         state.token = action.payload.token;
+        state.auth = true;
       })
       .addCase(fetchSignIn.rejected, (state) => {
+        state.auth = false;
+      })
+      .addCase(fetchUserByToken.fulfilled, (state, action: PayloadAction<User>) => {
+        state.user = action.payload;
+        state.auth = true;
+      })
+      .addCase(fetchUserByToken.rejected, (state) => {
         state.auth = false;
       })
       .addDefaultCase(() => {});
@@ -119,5 +159,5 @@ const AuthorizationSlice = createSlice({
 const { actions, reducer } = AuthorizationSlice;
 
 export default reducer;
-export const { login, logOut } = actions;
-export { fetchSignUp, fetchSignIn };
+export const { login, logOut, tokenAdd } = actions;
+export { fetchSignUp, fetchSignIn, fetchUserByToken };

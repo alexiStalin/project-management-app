@@ -56,7 +56,7 @@
 }
 
 .form button:disabled {
-  background-color: #c5c5c5;
+  background-color: #7fa680;
   cursor: not-allowed;
 }
 

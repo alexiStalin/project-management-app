@@ -1,13 +1,23 @@
 import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
-import { fetchSignIn, fetchSignUp } from '../../store/autorizationSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchSignIn, fetchUserByToken } from '../../store/autorizationSlice';
 import s from '../SignUpPage/SignUpPage.module.css';
+
+// localStorage.setItem(LocalStorageKeys.token, token);
+// localStorage.getItem(LocalStorageKeys.token);
 
 type Data = {
   login: string;
   password: string;
 };
+
+interface LocationState {
+  from: {
+    pathname: string;
+  };
+}
 
 const LoginPage = () => {
   const {
@@ -23,17 +33,22 @@ const LoginPage = () => {
   });
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fromPage = (location.state as LocationState)?.from || '/';
 
   const onSubmit = (data: Data) => {
-    console.log(data);
-    dispatch(fetchSignIn(data));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dispatch(fetchSignIn(data)).then((data: any) => dispatch(fetchUserByToken(data.payload.token)));
     reset();
+    navigate(fromPage, { replace: true });
   };
 
   return (
     <div className={s.loginPage}>
       <div className={s.form}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <div className={s.title}>Log in to your account</div>
           <input
             {...register('login', {
               required: true,
@@ -41,6 +56,7 @@ const LoginPage = () => {
             type="text"
             placeholder="Login"
             name="login"
+            autoComplete="off"
           />
           <input
             {...register('password', {
@@ -49,6 +65,7 @@ const LoginPage = () => {
             type="password"
             placeholder="Password"
             name="password"
+            autoComplete="off"
           />
           <button type="submit" disabled={!isValid}>
             login
