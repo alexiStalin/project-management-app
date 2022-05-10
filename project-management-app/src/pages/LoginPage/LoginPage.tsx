@@ -1,12 +1,10 @@
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/hooks';
-import { fetchSignIn, fetchUserByToken } from '../../store/autorizationSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchSignIn, fetchUserByToken, deleteError, Token } from '../../store/autorizationSlice';
 import s from '../SignUpPage/SignUpPage.module.css';
-
-// localStorage.setItem(LocalStorageKeys.token, token);
-// localStorage.getItem(LocalStorageKeys.token);
 
 type Data = {
   login: string;
@@ -20,6 +18,12 @@ interface LocationState {
 }
 
 const LoginPage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(deleteError());
+    // eslint-disable-next-line
+  }, []);
+
   const {
     register,
     formState: { isValid },
@@ -32,16 +36,19 @@ const LoginPage = () => {
     shouldFocusError: false,
   });
 
-  const dispatch = useAppDispatch();
+  const error = useAppSelector((state) => state.authorization.error);
   const navigate = useNavigate();
   const location = useLocation();
-  const fromPage = (location.state as LocationState)?.from || '/';
+  const fromPage = (location.state as LocationState)?.from || '/main';
 
   const onSubmit = (data: Data) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    dispatch(fetchSignIn(data)).then((data: any) => dispatch(fetchUserByToken(data.payload.token)));
-    reset();
-    navigate(fromPage, { replace: true });
+    dispatch(fetchSignIn(data)).then((data) => {
+      if (typeof data.payload !== 'string') {
+        dispatch(fetchUserByToken((data.payload as Token).token));
+        reset();
+        navigate(fromPage, { replace: true });
+      }
+    });
   };
 
   return (
@@ -49,6 +56,7 @@ const LoginPage = () => {
       <div className={s.form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={s.title}>Log in to your account</div>
+          <span className={s.messageError}>{error}</span>
           <input
             {...register('login', {
               required: true,

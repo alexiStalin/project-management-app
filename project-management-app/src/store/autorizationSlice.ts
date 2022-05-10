@@ -4,14 +4,15 @@ import jwt_decode from 'jwt-decode';
 const initialState: InitialState = {
   auth: false,
   token: '',
-  user: {},
+  user: null,
+  error: null,
 };
 
 type InitialState = {
   auth: boolean;
   token: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  user: User | {};
+  user: User | null;
+  error: string | null;
 };
 
 type UserAuthorization = {
@@ -20,7 +21,7 @@ type UserAuthorization = {
   password: string;
 };
 
-type UserGetToken = {
+type UserLogin = {
   login: string;
   password: string;
 };
@@ -31,38 +32,44 @@ type User = {
   login: string;
 };
 
-type Token = {
+export type Token = {
   token: string;
 };
 
 const _apiBase = 'https://deploy-board.herokuapp.com';
 
-const fetchSignUp = createAsyncThunk<User, UserAuthorization>(
-  'authorization/signin',
-  async function (userGetToken, { rejectWithValue }) {
-    try {
-      const response = await fetch(`${_apiBase}/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-        body: JSON.stringify(userGetToken),
-      });
-      if (!response.ok) {
-        throw new Error(`Could not fetch, status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
-      }
-    }
+const fetchSignUp = createAsyncThunk<
+  User,
+  UserAuthorization,
+  {
+    rejectValue: string;
   }
-);
+>('authorization/signUp', async function (user: UserAuthorization, { rejectWithValue }) {
+  try {
+    const response = await fetch(`${_apiBase}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(`${data.message}`);
+    }
+    const data: User = await response.json();
+    return data;
+  } catch (error) {
+    let message;
+    if (error instanceof Error) message = error.message;
+    else message = String(error);
+    console.log(message);
+    return rejectWithValue(message);
+  }
+});
 
-const fetchSignIn = createAsyncThunk<Token, UserGetToken>(
-  'authorization/signup',
+const fetchSignIn = createAsyncThunk<Token, UserLogin>(
+  'authorization/signin',
   async function (userAuthorization, { rejectWithValue }) {
     try {
       const response = await fetch(`${_apiBase}/signin`, {
@@ -73,7 +80,8 @@ const fetchSignIn = createAsyncThunk<Token, UserGetToken>(
         body: JSON.stringify(userAuthorization),
       });
       if (!response.ok) {
-        throw new Error(`Could not fetch, status: ${response.status}`);
+        const data = await response.json();
+        throw new Error(`${data.message}`);
       }
       const data = await response.json();
       return data;
@@ -124,25 +132,33 @@ const AuthorizationSlice = createSlice({
       localStorage.clear();
       state.auth = false;
       state.token = '';
-      state.user = {};
+      state.user = null;
     },
     tokenAdd: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
+    },
+    deleteError: (state) => {
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSignUp.fulfilled, (state, action: PayloadAction<User>) => {
+        state.error = null;
         state.user = action.payload;
       })
-      .addCase(fetchSignUp.rejected, (state) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .addCase(fetchSignUp.rejected, (state, action: PayloadAction<any>) => {
+        state.error = action.payload;
         state.auth = false;
       })
       .addCase(fetchSignIn.fulfilled, (state, action: PayloadAction<Token>) => {
         state.token = action.payload.token;
         state.auth = true;
       })
-      .addCase(fetchSignIn.rejected, (state) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .addCase(fetchSignIn.rejected, (state, action: PayloadAction<any>) => {
+        state.error = action.payload;
         state.auth = false;
       })
       .addCase(fetchUserByToken.fulfilled, (state, action: PayloadAction<User>) => {
@@ -159,5 +175,5 @@ const AuthorizationSlice = createSlice({
 const { actions, reducer } = AuthorizationSlice;
 
 export default reducer;
-export const { login, logOut, tokenAdd } = actions;
+export const { login, logOut, tokenAdd, deleteError } = actions;
 export { fetchSignUp, fetchSignIn, fetchUserByToken };

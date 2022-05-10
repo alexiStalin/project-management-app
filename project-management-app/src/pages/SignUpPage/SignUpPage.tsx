@@ -1,8 +1,9 @@
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/hooks';
-import { fetchSignUp } from '../../store/autorizationSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { fetchSignUp, deleteError } from '../../store/autorizationSlice';
 import s from './SignUpPage.module.css';
 
 type Data = {
@@ -12,6 +13,11 @@ type Data = {
 };
 
 const SignUpPage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(deleteError());
+    // eslint-disable-next-line
+  }, []);
   const {
     register,
     formState: { errors, isValid },
@@ -25,14 +31,15 @@ const SignUpPage = () => {
   });
 
   const navigate = useNavigate();
-
-  const dispatch = useAppDispatch();
+  const error = useAppSelector((state) => state.authorization.error);
 
   const onSubmit = (data: Data) => {
-    console.log(data);
-    dispatch(fetchSignUp(data));
-    reset();
-    navigate('../login', { replace: true });
+    dispatch(fetchSignUp(data)).then((data) => {
+      if (typeof data.payload !== 'string') {
+        reset();
+        navigate('../login', { replace: true });
+      }
+    });
   };
 
   return (
@@ -51,6 +58,7 @@ const SignUpPage = () => {
             name="name"
             autoComplete="off"
           />
+          <span className={s.messageError}>{error}</span>
           <span className={s.messageError}>{errors?.login?.message}</span>
           <input
             {...register('login', {
@@ -61,6 +69,9 @@ const SignUpPage = () => {
             placeholder="Login"
             name="login"
             autoComplete="off"
+            onChange={() => {
+              dispatch(deleteError());
+            }}
           />
           <span className={s.messageError}>{errors?.password?.message}</span>
           <input

@@ -1,9 +1,12 @@
 import { NavLink } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
+import { logOut } from '../../store/autorizationSlice';
 import './Header.css';
 
 const Header = () => {
   const auth = useAppSelector((state) => state.authorization.auth);
+  const dispatch = useAppDispatch();
+
   let elements: JSX.Element;
   if (auth) {
     elements = (
@@ -17,6 +20,13 @@ const Header = () => {
         <NavLink className="appLink" to="/board">
           Board
         </NavLink>
+        <button
+          onClick={() => {
+            dispatch(logOut());
+          }}
+        >
+          Log out
+        </button>
       </>
     );
   } else {
