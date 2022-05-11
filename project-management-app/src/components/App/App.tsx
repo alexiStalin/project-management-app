@@ -11,7 +11,7 @@ import { NotFoundPage } from '../../pages/NotFoundPage/NotFoundPage';
 
 import { Layout } from './Layout';
 
-import { RequireAuth } from '../../hoc/RequireAuth';
+import { RequireAuth, RequireAuthSignIn } from '../../hoc/RequireAuth';
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -44,8 +44,22 @@ const App = () => {
             </RequireAuth>
           }
         ></Route>
-        <Route path="login" element={<LoginPage />}></Route>
-        <Route path="signup" element={<SignUpPage />}></Route>
+        <Route
+          path="login"
+          element={
+            <RequireAuthSignIn>
+              <LoginPage />
+            </RequireAuthSignIn>
+          }
+        ></Route>
+        <Route
+          path="signup"
+          element={
+            <RequireAuthSignIn>
+              <SignUpPage />
+            </RequireAuthSignIn>
+          }
+        ></Route>
         <Route path="*" element={<NotFoundPage />}></Route>
       </Route>
     </Routes>
