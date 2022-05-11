@@ -1,4 +1,5 @@
 import { useLocation, Navigate } from 'react-router-dom';
+import { useAppSelector } from '../hooks/hooks';
 
 type PropsType = {
   children: JSX.Element;
@@ -6,8 +7,7 @@ type PropsType = {
 
 const RequireAuth = (props: PropsType) => {
   const location = useLocation();
-
-  const auth = true;
+  const auth = useAppSelector((state) => state.authorization.auth);
 
   if (!auth) {
     return <Navigate to="/" state={{ from: location }} />;
