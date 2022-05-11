@@ -54,7 +54,12 @@ const LoginPage = () => {
   return (
     <div className={s.loginPage}>
       <div className={s.form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          onChange={() => {
+            dispatch(deleteError());
+          }}
+        >
           <div className={s.title}>Log in to your account</div>
           <span className={s.messageError}>{error}</span>
           <input
