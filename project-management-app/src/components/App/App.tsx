@@ -1,4 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchUserByToken, tokenAdd } from '../../store/autorizationSlice';
 import { WelcomePage } from '../../pages/WelcomePage/WelcomePage';
 import { MainPage } from '../../pages/MainPage/MainPage';
 import { BoardPage } from '../../pages/BoardPage/BoardPage';
@@ -11,6 +14,16 @@ import { Layout } from './Layout';
 import { RequireAuth } from '../../hoc/RequireAuth';
 
 const App = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') || '';
+    if (token !== '') {
+      dispatch(fetchUserByToken(token));
+      dispatch(tokenAdd(token));
+    }
+    // eslint-disable-next-line
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
