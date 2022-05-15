@@ -5,12 +5,6 @@ type PropsType = {
   children: JSX.Element;
 };
 
-interface LocationState {
-  from: {
-    pathname: string;
-  };
-}
-
 const RequireAuth = (props: PropsType) => {
   const location = useLocation();
   const auth = useAppSelector((state) => state.authorization.auth);

@@ -3,7 +3,13 @@ import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetchSignIn, fetchUserByToken, deleteError, Token } from '../../store/autorizationSlice';
+import {
+  fetchSignIn,
+  fetchUserByToken,
+  deleteError,
+  savePassword,
+} from '../../store/autorizationSlice';
+import { Token } from '../../store/types';
 import s from '../SignUpPage/SignUpPage.module.css';
 
 type Data = {
@@ -42,6 +48,7 @@ const LoginPage = () => {
   const fromPage = (location.state as LocationState)?.from || '/main';
 
   const onSubmit = (data: Data) => {
+    dispatch(savePassword(data.password));
     dispatch(fetchSignIn(data)).then((data) => {
       if (typeof data.payload !== 'string') {
         dispatch(fetchUserByToken((data.payload as Token).token));

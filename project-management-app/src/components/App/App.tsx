@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
-import { fetchUserByToken, tokenAdd } from '../../store/autorizationSlice';
+import { fetchUserByToken, tokenAdd, savePassword } from '../../store/autorizationSlice';
 import { WelcomePage } from '../../pages/WelcomePage/WelcomePage';
 import { MainPage } from '../../pages/MainPage/MainPage';
 import { BoardPage } from '../../pages/BoardPage/BoardPage';
@@ -18,9 +18,11 @@ const App = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token') || '';
-    if (token !== '') {
+    const password = localStorage.getItem('password') || null;
+    if (token !== '' && password !== null) {
       dispatch(fetchUserByToken(token));
       dispatch(tokenAdd(token));
+      dispatch(savePassword(password));
     }
     // eslint-disable-next-line
   }, []);
@@ -44,6 +46,7 @@ const App = () => {
             </RequireAuth>
           }
         ></Route>
+        <Route path="board/:id" element={<BoardPage />}></Route>
         <Route
           path="login"
           element={
