@@ -12,7 +12,8 @@ const BoardsList = () => {
 
   useEffect(() => {
     dispatch(fetchGetAllBoards(token));
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //
   const renderBoards = () => {

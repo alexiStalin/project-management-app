@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { _apiBase } from './constant';
-import { BoardInitialState, BoardTitle } from './types';
+import { BoardColumnTask, BoardInitialState, BoardTitle } from './types';
 
 const initialState: BoardInitialState = {
   title: null,
   id: null,
   error: null,
   boards: null,
+  board: null,
+  currentCard: null,
 };
 
 const fetchGetAllBoards = createAsyncThunk<
@@ -57,11 +59,12 @@ const fetchCreateBoard = createAsyncThunk<
 
 const fetchGetBoardById = createAsyncThunk<
   BoardTitle,
-  string[],
+  string,
   {
     rejectValue: string;
   }
->('boards/fetchGetBoardById', async function ([token, id], { rejectWithValue }) {
+>('boards/fetchGetBoardById', async function (id, { rejectWithValue }) {
+  const token = localStorage.getItem('token') || '';
   const response = await fetch(`${_apiBase}/boards/${id}`, {
     method: 'GET',
     headers: {
@@ -125,8 +128,11 @@ const BoardsSlice = createSlice({
   name: 'boards',
   initialState,
   reducers: {
-    tokenAdd: (state, action: PayloadAction<string>) => {
-      state.title = action.payload;
+    changeBoard: (state, action: PayloadAction<BoardTitle>) => {
+      state.board = action.payload;
+    },
+    changeCurrentCard: (state, action: PayloadAction<BoardColumnTask>) => {
+      state.currentCard = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -135,7 +141,9 @@ const BoardsSlice = createSlice({
         state.boards = action.payload;
       })
       .addCase(fetchCreateBoard.fulfilled, (state) => {})
-      .addCase(fetchGetBoardById.fulfilled, (state) => {})
+      .addCase(fetchGetBoardById.fulfilled, (state, action) => {
+        state.board = action.payload;
+      })
       .addCase(fetchDeleteBoard.fulfilled, (state) => {})
       .addCase(fetchUpdateBoard.fulfilled, (state) => {})
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
@@ -148,7 +156,7 @@ const BoardsSlice = createSlice({
 const { actions, reducer } = BoardsSlice;
 
 export default reducer;
-export const { tokenAdd } = actions;
+export const { changeBoard, changeCurrentCard } = actions;
 export {
   fetchGetAllBoards,
   fetchCreateBoard,

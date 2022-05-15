@@ -37,6 +37,8 @@ export type BoardInitialState = {
   id: string | null;
   error: string | null;
   boards: BoardTitle[] | null;
+  board: BoardTitle | null;
+  currentCard: BoardColumnTask | null;
 };
 
 export type BoardTitle = {

@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../hooks/hooks';
 import { fetchUserByToken, tokenAdd, savePassword } from '../../store/autorizationSlice';
 import { WelcomePage } from '../../pages/WelcomePage/WelcomePage';
 import { MainPage } from '../../pages/MainPage/MainPage';
-import { BoardPage } from '../../pages/BoardPage/BoardPage';
+import BoardPage from '../../pages/BoardPage/BoardPage';
 import { LoginPage } from '../../pages/LoginPage/LoginPage';
 import { SignUpPage } from '../../pages/SignUpPage/SignUpPage';
 import { NotFoundPage } from '../../pages/NotFoundPage/NotFoundPage';
