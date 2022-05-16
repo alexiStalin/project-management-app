@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { _apiBase } from './constant';
-import { BoardColumnTask, BoardInitialState, BoardTitle } from './types';
+import { BoardColumn, BoardColumnTask, BoardInitialState, BoardTitle } from './types';
 
 const initialState: BoardInitialState = {
   title: null,
@@ -9,6 +9,8 @@ const initialState: BoardInitialState = {
   boards: null,
   board: null,
   currentCard: null,
+  currentColumn: null,
+  currentColumnOrder: null,
 };
 
 const fetchGetAllBoards = createAsyncThunk<
@@ -134,6 +136,12 @@ const BoardsSlice = createSlice({
     changeCurrentCard: (state, action: PayloadAction<BoardColumnTask>) => {
       state.currentCard = action.payload;
     },
+    changeCurrentColumn: (state, action: PayloadAction<BoardColumn>) => {
+      state.currentColumn = action.payload;
+    },
+    changeCurrentColumnOrder: (state, action: PayloadAction<number>) => {
+      state.currentColumnOrder = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -156,7 +164,8 @@ const BoardsSlice = createSlice({
 const { actions, reducer } = BoardsSlice;
 
 export default reducer;
-export const { changeBoard, changeCurrentCard } = actions;
+export const { changeBoard, changeCurrentCard, changeCurrentColumnOrder, changeCurrentColumn } =
+  actions;
 export {
   fetchGetAllBoards,
   fetchCreateBoard,

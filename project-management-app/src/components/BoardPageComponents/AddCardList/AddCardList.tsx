@@ -1,73 +1,87 @@
 import React, { useState, DragEvent } from 'react';
 import { BoardColumn, BoardColumnTask, BoardTitle } from '../../../store/types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { changeBoard, changeCurrentCard } from '../../../store/boardsSlice';
+import {
+  changeBoard,
+  changeCurrentCard,
+  changeCurrentColumnOrder,
+} from '../../../store/boardsSlice';
 import s from './AddCardList.module.css';
 
 type MyProps = {
   data: BoardColumn;
+  orderColumn: number;
 };
 
 const AddCardList = (props: MyProps) => {
   const [view, setView] = useState(false);
-  // const [currentCard, setCurrentCard] = useState<BoardColumnTask | null>(null);
-  // const [cardList, setCardList] = useState<BoardColumn>(props.data);
+
   const dispatch = useAppDispatch();
-  const { board, currentCard } = useAppSelector((state) => state.boards);
+  const { board, currentCard, currentColumnOrder } = useAppSelector((state) => state.boards);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
   const dragStartHandler = (e: DragEvent<HTMLDivElement>, card: BoardColumnTask) => {
+    const target = e.target as HTMLDivElement;
+    if (target.className == s.cardPoint) {
+      target.style.boxShadow = '0 1px 0 #091e4240';
+    }
     dispatch(changeCurrentCard(card));
-    // setCurrentCard(card);
+    dispatch(changeCurrentColumnOrder(Number(target.dataset.order)));
   };
 
-  // const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {};
+  const dragLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    if (target.className == s.cardPoint) {
+      target.style.boxShadow = '0 1px 0 #091e4240';
+    }
+  };
 
   const dragEndHandler = (e: DragEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
-    target.style.background = '#fff';
+    if (target.className == s.cardPoint) {
+      target.style.boxShadow = '0 1px 0 #091e4240';
+    }
   };
 
   const dragOverHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const target = e.target as HTMLDivElement;
-
-    target.style.background = 'lightgray';
+    if (target.className == s.cardPoint) {
+      target.style.boxShadow = '0 4px 3px gray';
+    }
   };
 
   const dropHandler = (e: DragEvent<HTMLDivElement>, card: BoardColumnTask) => {
     e.preventDefault();
-    const cardList = props.data;
-
-    if (cardList.tasks !== undefined) {
-      if (currentCard !== null) {
-        const indexCard = cardList.tasks.indexOf(card);
-        const indexCurrentCard = cardList.tasks.indexOf(currentCard);
-
-        [cardList.tasks[indexCard], cardList.tasks[indexCurrentCard]] = [
-          cardList.tasks[indexCurrentCard],
-          cardList.tasks[indexCard],
-        ];
-      }
-    }
-    const indexColumn = board?.columns?.findIndex((el) => el.id === cardList.id) as number;
-    if (board !== null) {
-      if (board.columns !== undefined) {
-        const changeBoards: BoardTitle = JSON.parse(JSON.stringify(board));
-        if (changeBoards.columns !== undefined) {
-          changeBoards.columns[indexColumn] = cardList;
-          console.log(changeBoards);
-          dispatch(changeBoard(changeBoards));
-        }
-      }
-    }
-
     const target = e.target as HTMLDivElement;
 
-    target.style.background = '#fff';
+    const boardCopy: BoardTitle = JSON.parse(JSON.stringify(board));
+    if (boardCopy.columns !== undefined && currentCard !== null) {
+      const currentBoardIndex = boardCopy?.columns.findIndex(
+        (el) => el.order === currentColumnOrder
+      );
+      const currentBoard: BoardColumn = boardCopy?.columns[currentBoardIndex];
+      const currentIndex = currentBoard.tasks?.findIndex(
+        (el) => el.id === currentCard.id
+      ) as number;
+      currentBoard.tasks?.splice(currentIndex, 1);
+
+      const dropBoardIndex = boardCopy?.columns.findIndex(
+        (el) => el.order === Number(target.dataset.order)
+      );
+      const dropBoard: BoardColumn = boardCopy?.columns[dropBoardIndex];
+      if (dropBoard.tasks !== undefined) {
+        const dropIndex = dropBoard.tasks?.findIndex((el) => el.id === card.id);
+        dropBoard.tasks.splice(dropIndex + 1, 0, currentCard);
+        dispatch(changeBoard(boardCopy));
+      }
+    }
+    if (target.className == s.cardPoint) {
+      target.style.boxShadow = '0 1px 0 #091e4240';
+    }
   };
 
   const renderCards = () => {
@@ -80,10 +94,11 @@ const AddCardList = (props: MyProps) => {
               key={card.id}
               draggable={true}
               onDragStart={(e) => dragStartHandler(e, card)}
-              // onDragLeave={(e) => dragLeaveHandler(e)}
+              onDragLeave={(e) => dragLeaveHandler(e)}
               onDragEnd={(e) => dragEndHandler(e)}
               onDragOver={(e) => dragOverHandler(e)}
               onDrop={(e) => dropHandler(e, card)}
+              data-order={props.orderColumn}
             >
               {card.title}
             </div>
