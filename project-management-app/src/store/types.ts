@@ -62,10 +62,48 @@ export type BoardColumnTask = {
   order: number;
   description: string;
   userId: string;
+  boardId: string;
   files: BoardFile[];
 };
 
 export type BoardFile = {
   filename: string;
   fileSize: number;
+};
+
+export type ColumnsInitialState = {
+  title: string | null;
+  id: string | null;
+  error: string | null;
+  columns: ColumnGet[] | null;
+  column: ColumnGet | null;
+};
+
+export type ColumnGet = {
+  id: string;
+  title: string;
+  order: number;
+};
+
+export type ColumnCreate = {
+  id: string;
+  title: string;
+  order: number;
+};
+
+export type TaskCreate = {
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
+};
+
+export type TasksInitialState = {
+  id: string | null;
+  error: string | null;
+  tasks: ColumnGet[] | null;
+  task: ColumnGet | null;
 };
