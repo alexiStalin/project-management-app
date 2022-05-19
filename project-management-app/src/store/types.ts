@@ -34,7 +34,7 @@ export type Token = {
 
 export type BoardInitialState = {
   title: string | null;
-  id: string | null;
+  boardId: string | null;
   error: string | null;
   boards: BoardTitle[] | null;
   board: BoardTitle | null;

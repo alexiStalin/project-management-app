@@ -34,7 +34,7 @@ const fetchGetAllColumns = createAsyncThunk<
 
 const fetchCreateColumn = createAsyncThunk<
   ColumnCreate,
-  string[],
+  [string, string, number],
   {
     rejectValue: string;
   }
@@ -102,7 +102,7 @@ const fetchDeleteColumn = createAsyncThunk<
 
 const fetchUpdateColumn = createAsyncThunk<
   ColumnCreate,
-  string[],
+  [string, string, string, number],
   {
     rejectValue: string;
   }

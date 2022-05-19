@@ -46,7 +46,7 @@ const App = () => {
             </RequireAuth>
           }
         ></Route>
-        <Route path="board/:id" element={<BoardPage />}></Route>
+        <Route path="board/:boardId" element={<BoardPage />}></Route>
         <Route
           path="login"
           element={

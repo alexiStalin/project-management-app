@@ -33,7 +33,7 @@ const fetchGetAllTasks = createAsyncThunk<
 
 const fetchCreateTask = createAsyncThunk<
   TaskCreate,
-  string[],
+  [string, string, string, number, string, string],
   {
     rejectValue: string;
   }
@@ -87,7 +87,7 @@ const fetchGetTaskById = createAsyncThunk<
 
 const fetchDeleteTask = createAsyncThunk<
   void,
-  string[],
+  [string, string, string],
   {
     rejectValue: string;
   }
@@ -110,7 +110,7 @@ const fetchDeleteTask = createAsyncThunk<
 
 const fetchUpdateTask = createAsyncThunk<
   TaskCreate,
-  string[],
+  [string, string, string, string, number, string, string],
   {
     rejectValue: string;
   }

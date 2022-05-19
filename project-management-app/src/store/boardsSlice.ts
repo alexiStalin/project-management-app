@@ -4,7 +4,7 @@ import { BoardColumn, BoardColumnTask, BoardInitialState, BoardTitle } from './t
 
 const initialState: BoardInitialState = {
   title: null,
-  id: null,
+  boardId: null,
   error: null,
   boards: null,
   board: null,
@@ -130,6 +130,9 @@ const BoardsSlice = createSlice({
   name: 'boards',
   initialState,
   reducers: {
+    changeBoardId: (state, action: PayloadAction<string>) => {
+      state.boardId = action.payload;
+    },
     changeBoard: (state, action: PayloadAction<BoardTitle>) => {
       state.board = action.payload;
     },
@@ -164,8 +167,13 @@ const BoardsSlice = createSlice({
 const { actions, reducer } = BoardsSlice;
 
 export default reducer;
-export const { changeBoard, changeCurrentCard, changeCurrentColumnOrder, changeCurrentColumn } =
-  actions;
+export const {
+  changeBoardId,
+  changeBoard,
+  changeCurrentCard,
+  changeCurrentColumnOrder,
+  changeCurrentColumn,
+} = actions;
 export {
   fetchGetAllBoards,
   fetchCreateBoard,
