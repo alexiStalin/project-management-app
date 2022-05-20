@@ -1,37 +1,43 @@
-import { useEffect, useState, RefObject, createRef } from 'react';
+import { useState, RefObject, createRef, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { fetchGetBoardById } from '../../../store/boardsSlice';
 import { fetchCreateColumn, fetchGetAllColumns } from '../../../store/columnsSlice';
+import { RootState } from '../../../store/store';
 
 import s from './AddColumn.module.css';
 
 const AddColumn = () => {
   const [view, setView] = useState(false);
-  const boardId = useAppSelector((state) => state.boards.boardId);
+  // const boardId = useAppSelector((state) => state.boards.boardId);
   const columns = useAppSelector((state) => state.columns.columns);
   const dispatch = useAppDispatch();
   const title: RefObject<HTMLInputElement> = createRef();
+  const { boardId } = useParams();
 
-  // useEffect(() => {
-  //   if (boardId !== null) {
-  //     dispatch(fetchGetAllColumns(boardId));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (title.current !== null && boardId !== null) {
-      const titleNewTask = title.current.value;
+  useEffect(() => {
+    if (boardId !== undefined) {
       dispatch(fetchGetAllColumns(boardId));
+      dispatch(fetchGetBoardById(boardId));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (title.current !== null && boardId !== undefined) {
+      const titleNewTask = title.current.value;
       if (titleNewTask !== '' && boardId !== null && columns !== null) {
         const maxOrder = columns.reduce((prev, cur) => (cur.order > prev.order ? cur : prev), {
           order: -Infinity,
         });
-        const order = maxOrder.order + 1;
-        dispatch(fetchCreateColumn([boardId, titleNewTask, order]));
+        const order = maxOrder.order === -Infinity ? 1 : maxOrder.order + 1;
         title.current.value = '';
-        dispatch(fetchGetBoardById(boardId));
+        setView(false);
+        await dispatch(fetchCreateColumn([boardId, titleNewTask, order]));
+        await dispatch(fetchGetBoardById(boardId));
+        await dispatch(fetchGetAllColumns(boardId));
       }
     }
   };
@@ -67,4 +73,5 @@ const AddColumn = () => {
   );
 };
 
-export { AddColumn };
+// export { AddColumn };
+export default connect((state: RootState) => ({ active: state.columns.columns }))(AddColumn);

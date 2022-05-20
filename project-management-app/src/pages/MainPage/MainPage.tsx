@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SettingList } from '../../components/MainPageComponents/SettingList/SettingList';
-import { BoardsList } from '../../components/MainPageComponents/BoardsList/BoardsList';
+import BoardsList from '../../components/MainPageComponents/BoardsList/BoardsList';
 
 import s from './MainPage.module.css';
 

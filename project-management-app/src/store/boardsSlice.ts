@@ -151,12 +151,12 @@ const BoardsSlice = createSlice({
       .addCase(fetchGetAllBoards.fulfilled, (state, action) => {
         state.boards = action.payload;
       })
-      .addCase(fetchCreateBoard.fulfilled, (state) => {})
+      // .addCase(fetchCreateBoard.fulfilled, (state) => {})
       .addCase(fetchGetBoardById.fulfilled, (state, action) => {
         state.board = action.payload;
       })
-      .addCase(fetchDeleteBoard.fulfilled, (state) => {})
-      .addCase(fetchUpdateBoard.fulfilled, (state) => {})
+      // .addCase(fetchDeleteBoard.fulfilled, (state) => {})
+      // .addCase(fetchUpdateBoard.fulfilled, (state) => {})
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       })

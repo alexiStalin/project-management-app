@@ -2,7 +2,6 @@ import React, { useState, DragEvent, RefObject, createRef } from 'react';
 import { BoardColumn, BoardColumnTask, BoardTitle } from '../../../store/types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
-  changeBoard,
   changeCurrentCard,
   changeCurrentColumnOrder,
   fetchGetBoardById,
@@ -47,15 +46,14 @@ const AddCardList = (props: MyProps) => {
               }
             );
             const order = maxOrder.order === -Infinity ? 1 : maxOrder.order + 1;
+            if (title.current !== null) {
+              title.current.value = '';
+            }
 
             await dispatch(
               fetchCreateTask([boardId, columnId, titleNewTask, order, 'null', userId])
             );
             await dispatch(fetchGetBoardById(boardId));
-
-            if (title.current !== null) {
-              title.current.value = '';
-            }
           }
         });
       }
@@ -131,7 +129,7 @@ const AddCardList = (props: MyProps) => {
             const promises = data.map((arr) => {
               return dispatch(fetchUpdateTask(arr));
             });
-            await Promise.all(promises).then(console.log).catch(console.error);
+            await Promise.all(promises);
             await dispatch(fetchGetBoardById(boardId));
           }
         }
@@ -184,7 +182,7 @@ const AddCardList = (props: MyProps) => {
               const promises = data.map((arr) => {
                 return dispatch(fetchUpdateTask(arr));
               });
-              await Promise.all(promises).then(console.log).catch(console.error);
+              await Promise.all(promises);
 
               await dispatch(fetchGetBoardById(boardId));
             }

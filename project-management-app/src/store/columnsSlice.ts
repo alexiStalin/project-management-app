@@ -143,12 +143,12 @@ const BoardsSlice = createSlice({
       .addCase(fetchGetAllColumns.fulfilled, (state, action) => {
         state.columns = action.payload;
       })
-      .addCase(fetchCreateColumn.fulfilled, (state) => {})
+      // .addCase(fetchCreateColumn.fulfilled, (state) => {})
       .addCase(fetchGetColumnById.fulfilled, (state, action) => {
         state.column = action.payload;
       })
-      .addCase(fetchDeleteColumn.fulfilled, (state) => {})
-      .addCase(fetchUpdateColumn.fulfilled, (state) => {})
+      // .addCase(fetchDeleteColumn.fulfilled, (state) => {})
+      // .addCase(fetchUpdateColumn.fulfilled, (state) => {})
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       })

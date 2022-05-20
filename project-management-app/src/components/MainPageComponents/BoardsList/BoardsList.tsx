@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from '../../../hooks/hooks';
 import { BoardTitle } from '../../../store/types';
 import BoardItem from '../BoardItem/BoardItem';
 import { fetchGetAllBoards, fetchCreateBoard } from '../../../store/boardsSlice';
+import { connect } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 const BoardsList = () => {
   const { boards } = useAppSelector((state) => state.boards);
@@ -15,7 +17,6 @@ const BoardsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //
   const renderBoards = () => {
     if (boards !== null) {
       if (boards.length !== 0) {
@@ -29,14 +30,14 @@ const BoardsList = () => {
   };
   const content = renderBoards();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newBoardTitle.current !== null) {
       const newBoard = newBoardTitle.current.value;
       if (newBoard !== '') {
-        dispatch(fetchCreateBoard([token, newBoard]));
-        dispatch(fetchGetAllBoards(token));
         newBoardTitle.current.value = '';
+        await dispatch(fetchCreateBoard([token, newBoard]));
+        await dispatch(fetchGetAllBoards(token));
       }
     }
   };
@@ -59,4 +60,5 @@ const BoardsList = () => {
   );
 };
 
-export { BoardsList };
+// export { BoardsList };
+export default connect((state: RootState) => ({ active: state.boards.boards }))(BoardsList);
