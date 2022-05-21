@@ -1,0 +1,49 @@
+.inputTitle {
+  display: block;
+  padding: 8px 12px;
+  margin: 7px auto 0;
+  width: 240px;
+  height: auto;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #172b4d;
+  background-color: #fafbfc;
+  border: none;
+  border-radius: 3px;
+  resize: none;
+  box-shadow: inset 0 0 0 2px #dfe1e6;
+}
+
+.messageError {
+  height: 15px;
+  color: #f38080;
+  font-size: 14px;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+}
+
+.addCardBtnCreate {
+  width: 100%;
+  margin-top: 30px;
+  min-height: 40px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  background-color: rgb(0, 121, 191);
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  color: rgb(255, 255, 255);
+  opacity: 1;
+  transition: opacity 0.3;
+  cursor: pointer;
+}
+
+.addCardBtnCreate:hover,
+.addCardBtnCreate:active,
+.addCardBtnCreate:focus {
+  opacity: 0.8;
+}

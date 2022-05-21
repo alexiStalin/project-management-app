@@ -107,3 +107,7 @@ export type TasksInitialState = {
   tasks: ColumnGet[] | null;
   task: ColumnGet | null;
 };
+
+export type ModalInitialState = {
+  isOpen: boolean;
+};

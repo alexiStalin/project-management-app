@@ -17,15 +17,15 @@ const Header = () => {
         <NavLink className="appLink" to="/main">
           Main
         </NavLink>
-        <NavLink className="appLink" to="/board">
+        {/* <NavLink className="appLink" to="/board">
           Board
-        </NavLink>
+        </NavLink> */}
         <button
           onClick={() => {
             dispatch(logOut());
           }}
         >
-          Log out
+          Log out ↺
         </button>
       </>
     );

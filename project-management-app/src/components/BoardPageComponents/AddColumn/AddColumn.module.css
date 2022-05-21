@@ -5,25 +5,13 @@ body {
 .container {
   float: left;
   box-sizing: border-box;
-  display: inline-block;
+  display: block;
   height: 100%;
   margin: 0 4px;
-  vertical-align: top;
+  /* vertical-align: top; */
   white-space: nowrap;
   width: 270px;
   background-color: #ffffff3d;
-  border-radius: 3px;
-}
-.containerActive {
-  float: left;
-  box-sizing: border-box;
-  display: inline-block;
-  height: 100%;
-  margin: 0 4px;
-  vertical-align: top;
-  white-space: nowrap;
-  width: 270px;
-  background-color: #ebecf0;
   border-radius: 3px;
 }
 
@@ -33,15 +21,22 @@ body {
   border: none;
   color: #fff;
   padding: 6px 8px;
-  transition: color 85ms ease-in;
+  opacity: 1;
+  transition: opacity 0.3;
   cursor: pointer;
+}
+
+.addListBtn:hover,
+.addListBtn:active,
+.addListBtn:focus {
+  opacity: 0.8;
 }
 
 .inputTitle {
   display: block;
   padding: 8px 12px;
-  margin: 7px auto 0;
-  width: 232px;
+  margin: 7px auto;
+  width: 240px;
   font: inherit;
   font-size: 14px;
   font-weight: 400;
@@ -55,9 +50,9 @@ body {
 
 .addListBtnCreate {
   float: left;
-  height: 32px;
-  margin: 7px;
-  min-height: 32px;
+  margin-top: 25px;
+  width: 100%;
+  min-height: 40px;
   padding-bottom: 4px;
   padding-top: 4px;
   background-color: rgb(0, 121, 191);
@@ -65,15 +60,22 @@ body {
   border-radius: 3px;
   box-shadow: none;
   color: rgb(255, 255, 255);
+  opacity: 1;
+  transition: opacity 0.3;
   cursor: pointer;
 }
 
-.close {
-  float: left;
-  border: none;
-  font-size: 20px;
-  line-height: 40px;
-  cursor: pointer;
-  color: rgb(0, 121, 191);
-  background-color: initial;
+.addListBtnCreate:hover,
+.addListBtnCreate:active,
+.addListBtnCreate:focus {
+  opacity: 0.8;
+}
+
+.messageError {
+  height: 15px;
+  color: #f38080;
+  font-size: 14px;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
 }

@@ -1,19 +1,27 @@
-import { useState, RefObject, createRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { fetchGetBoardById } from '../../../store/boardsSlice';
 import { fetchCreateColumn, fetchGetAllColumns } from '../../../store/columnsSlice';
 import { RootState } from '../../../store/store';
+import Modal from '../../Modal/Modal';
 
 import s from './AddColumn.module.css';
 
+type Data = {
+  title: string;
+};
+
 const AddColumn = () => {
-  const [view, setView] = useState(false);
-  // const boardId = useAppSelector((state) => state.boards.boardId);
+  const [modalActive, setModalActive] = useState({
+    modalAddColumn: false,
+    modalDeleteColumn: false,
+  });
+
   const columns = useAppSelector((state) => state.columns.columns);
   const dispatch = useAppDispatch();
-  const title: RefObject<HTMLInputElement> = createRef();
   const { boardId } = useParams();
 
   useEffect(() => {
@@ -24,54 +32,64 @@ const AddColumn = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (title.current !== null && boardId !== undefined) {
-      const titleNewTask = title.current.value;
-      if (titleNewTask !== '' && boardId !== null && columns !== null) {
-        const maxOrder = columns.reduce((prev, cur) => (cur.order > prev.order ? cur : prev), {
-          order: -Infinity,
-        });
-        const order = maxOrder.order === -Infinity ? 1 : maxOrder.order + 1;
-        title.current.value = '';
-        setView(false);
-        await dispatch(fetchCreateColumn([boardId, titleNewTask, order]));
-        await dispatch(fetchGetBoardById(boardId));
-        await dispatch(fetchGetAllColumns(boardId));
-      }
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<Data>({
+    shouldFocusError: true,
+  });
+
+  const onSubmit = async (data: Data) => {
+    if (boardId !== null && columns !== null && boardId !== undefined) {
+      const maxOrder = columns.reduce((prev, cur) => (cur.order > prev.order ? cur : prev), {
+        order: -Infinity,
+      });
+      const order = maxOrder.order === -Infinity ? 1 : maxOrder.order + 1;
+      reset();
+      setModalActive({ ...modalActive, modalAddColumn: false, modalDeleteColumn: false });
+      await dispatch(fetchCreateColumn([boardId, data.title, order]));
+      await dispatch(fetchGetBoardById(boardId));
+      await dispatch(fetchGetAllColumns(boardId));
     }
   };
 
+  const onModalClose = (active: boolean) => {
+    reset();
+    setModalActive({ ...modalActive, modalAddColumn: active, modalDeleteColumn: active });
+  };
+
   return (
-    <div className={!view ? s.container : s.containerActive}>
-      <button
-        onClick={() => setView(true)}
-        className={s.addListBtn}
-        style={{ display: view ? 'none' : 'block' }}
-      >
-        <span></span>
-        <span className={s.iconAdd}>+ Add a list</span>
-      </button>
-      <div style={{ display: view ? 'block' : 'none' }}>
-        <form onSubmit={handleSubmit}>
-          <input
-            className={s.inputTitle}
-            ref={title}
-            type="text"
-            name="title"
-            placeholder="Enter list title..."
-          ></input>
-          <button className={s.addListBtnCreate} type="submit">
-            Add list
-          </button>
-        </form>
-        <button className={s.close} onClick={() => setView(false)}>
-          x
+    <>
+      <div className={s.container}>
+        <button
+          onClick={() => setModalActive({ ...modalActive, modalAddColumn: true })}
+          className={s.addListBtn}
+        >
+          <span></span>
+          <span className={s.iconAdd}>+ Add a list</span>
         </button>
       </div>
-    </div>
+      <Modal isOpened={modalActive.modalAddColumn} title={'Add a list'} onModalClose={onModalClose}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <span className={s.messageError}>{errors?.title?.message}</span>
+          <input
+            {...register('title', {
+              required: 'Enter a title',
+            })}
+            type="text"
+            placeholder="Enter list title..."
+            autoComplete="off"
+            className={s.inputTitle}
+          />
+          <button className={s.addListBtnCreate} type="submit">
+            Add card
+          </button>
+        </form>
+      </Modal>
+    </>
   );
 };
 
-// export { AddColumn };
 export default connect((state: RootState) => ({ active: state.columns.columns }))(AddColumn);

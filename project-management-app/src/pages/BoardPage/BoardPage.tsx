@@ -1,5 +1,5 @@
 import { useEffect, DragEvent } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchGetBoardById, changeCurrentColumn, changeBoardId } from '../../store/boardsSlice';
 import { BoardTitle, BoardColumn } from '../../store/types';
@@ -9,6 +9,7 @@ import { AddCardList } from '../../components/BoardPageComponents/AddCardList/Ad
 import { connect } from 'react-redux';
 
 import s from '../../components/BoardPageComponents/AddCardList/AddCardList.module.css';
+import style from './style.module.css';
 import { fetchUpdateColumn } from '../../store/columnsSlice';
 import { fetchCreateTask, fetchDeleteTask } from '../../store/tasksSlice';
 
@@ -76,26 +77,26 @@ const BoardPage = () => {
   const dragColumnStartHandler = (e: DragEvent<HTMLDivElement>, data: BoardColumn) => {
     const target = e.target as HTMLDivElement;
     dispatch(changeCurrentColumn(data));
-    if (target.className === s.listTitleMove) {
+    if (target.className === s.columnMove) {
       target.style.backgroundColor = '#ebecf0';
     }
   };
   const dragColumnLeaveHandler = (e: DragEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
-    if (target.className === s.listTitleMove) {
+    if (target.className === s.columnMove) {
       target.style.backgroundColor = '#ebecf0';
     }
   };
   const dragColumnEndHandler = (e: DragEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
-    if (target.className === s.listTitleMove) {
+    if (target.className === s.columnMove) {
       target.style.backgroundColor = '#ebecf0';
     }
   };
   const dragColumnOverHandler = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const target = e.target as HTMLDivElement;
-    if (target.className === s.listTitleMove) {
+    if (target.className === s.columnMove) {
       target.style.backgroundColor = 'gray';
     }
   };
@@ -103,7 +104,7 @@ const BoardPage = () => {
   const dropColumnHandler = async (e: DragEvent<HTMLDivElement>, data: BoardColumn) => {
     e.preventDefault();
     const target = e.target as HTMLDivElement;
-    if (target.className === s.listTitleMove) {
+    if (target.className === s.columnMove) {
       if (data.tasks !== undefined && boardId !== undefined && currentColumn !== null) {
         const columns: BoardColumn[] = JSON.parse(JSON.stringify(board?.columns));
         columns?.sort((a, b) => a.order - b.order);
@@ -140,6 +141,7 @@ const BoardPage = () => {
         sortBoard.sort((a, b) => a.order - b.order);
         return sortBoard.map((data) => (
           <div
+            // className={style.columnContainer}
             key={data.id}
             draggable={true}
             onDragStart={(e) => dragColumnStartHandler(e, data)}
@@ -164,7 +166,12 @@ const BoardPage = () => {
 
   return (
     <div>
-      <h1>BoardPage</h1>
+      <div className={style.titleContainer}>
+        <Link to={`/main`} className={style.back}>
+          <span className={style.arrowBack}>🢐</span>Back to main
+        </Link>
+        <h2 className={style.title}>{board?.title}</h2>
+      </div>
       <>{content}</>
       <AddColumn></AddColumn>
     </div>
