@@ -34,9 +34,13 @@ export type Token = {
 
 export type BoardInitialState = {
   title: string | null;
-  id: string | null;
+  boardId: string | null;
   error: string | null;
   boards: BoardTitle[] | null;
+  board: BoardTitle | null;
+  currentCard: BoardColumnTask | null;
+  currentColumn: BoardColumn | null;
+  currentColumnOrder: number | null;
 };
 
 export type BoardTitle = {
@@ -58,10 +62,52 @@ export type BoardColumnTask = {
   order: number;
   description: string;
   userId: string;
+  boardId: string;
   files: BoardFile[];
 };
 
 export type BoardFile = {
   filename: string;
   fileSize: number;
+};
+
+export type ColumnsInitialState = {
+  title: string | null;
+  id: string | null;
+  error: string | null;
+  columns: ColumnGet[] | null;
+  column: ColumnGet | null;
+};
+
+export type ColumnGet = {
+  id: string;
+  title: string;
+  order: number;
+};
+
+export type ColumnCreate = {
+  id: string;
+  title: string;
+  order: number;
+};
+
+export type TaskCreate = {
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
+};
+
+export type TasksInitialState = {
+  id: string | null;
+  error: string | null;
+  tasks: ColumnGet[] | null;
+  task: ColumnGet | null;
+};
+
+export type ModalInitialState = {
+  isOpen: boolean;
 };

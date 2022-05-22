@@ -15,20 +15,20 @@ const BoardItem = (props: MyProps) => {
   const dispatch = useAppDispatch();
   const newBoardTitle: RefObject<HTMLInputElement> = createRef();
 
-  const deleteBoard = () => {
-    dispatch(fetchDeleteBoard([token, props.id]));
-    dispatch(fetchGetAllBoards(token));
+  const deleteBoard = async () => {
+    await dispatch(fetchDeleteBoard([token, props.id]));
+    await dispatch(fetchGetAllBoards(token));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (newBoardTitle.current !== null) {
       const newBoard = newBoardTitle.current.value;
       if (newBoard !== '') {
-        dispatch(fetchUpdateBoard([token, props.id, newBoard]));
-        dispatch(fetchGetAllBoards(token));
-        newBoardTitle.current.value = '';
         setChangeTitle(false);
+        newBoardTitle.current.value = '';
+        await dispatch(fetchUpdateBoard([token, props.id, newBoard]));
+        await dispatch(fetchGetAllBoards(token));
       }
     }
   };

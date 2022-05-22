@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { SettingList } from '../../components/MainPageComponents/SettingList/SettingList';
-import { BoardsList } from '../../components/MainPageComponents/BoardsList/BoardsList';
+import BoardsList from '../../components/MainPageComponents/BoardsList/BoardsList';
 
 import s from './MainPage.module.css';
+import Modal from '../../components/Modal/Modal';
 
 const MainPage = () => {
   const [state, setState] = useState(true);
@@ -22,6 +23,13 @@ const MainPage = () => {
               </li>
             </ul>
           </nav>
+          {/* <Modal isOpened={false} title={'Are you shure?'}>
+            <form>
+              <input type="text" name="title" placeholder="title"></input>
+              <input type="text" name="description" placeholder="description"></input>
+              <button type="submit">Create</button>
+            </form>
+          </Modal> */}
         </div>
         <div>{state ? <BoardsList /> : <SettingList />}</div>
       </div>
