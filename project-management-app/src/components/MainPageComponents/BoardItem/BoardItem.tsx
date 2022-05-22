@@ -1,68 +1,129 @@
-import { useState, RefObject, createRef } from 'react';
+import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../hooks/hooks';
 import { fetchGetAllBoards, fetchDeleteBoard, fetchUpdateBoard } from '../../../store/boardsSlice';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import s from './BoardItem.module.css';
+import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
+import { Card, CardContent, Typography, CardActions, Button, Link, Grid } from '@mui/material';
+import { Container } from '@mui/system';
+import Modal from '../../Modal/Modal';
 
 type MyProps = {
   title: string;
   id: string;
 };
+type Data = {
+  title: string;
+};
 
 const BoardItem = (props: MyProps) => {
-  const [changeTitle, setChangeTitle] = useState(false);
   const token = useAppSelector((state) => state.authorization.token);
   const dispatch = useAppDispatch();
-  const newBoardTitle: RefObject<HTMLInputElement> = createRef();
+
+  const [modalActive, setModalActive] = useState({
+    modalAddBoard: false,
+    modalDeleteBoard: false,
+    modalChangeBoard: false,
+  });
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<Data>({
+    shouldFocusError: true,
+  });
 
   const deleteBoard = async () => {
     await dispatch(fetchDeleteBoard([token, props.id]));
     await dispatch(fetchGetAllBoards(token));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (newBoardTitle.current !== null) {
-      const newBoard = newBoardTitle.current.value;
-      if (newBoard !== '') {
-        setChangeTitle(false);
-        newBoardTitle.current.value = '';
-        await dispatch(fetchUpdateBoard([token, props.id, newBoard]));
-        await dispatch(fetchGetAllBoards(token));
-      }
-    }
+  const onSubmit = async (data: Data) => {
+    reset();
+    setModalActive({ ...modalActive, modalChangeBoard: false });
+    await dispatch(fetchUpdateBoard([token, props.id, data.title]));
+    await dispatch(fetchGetAllBoards(token));
   };
 
-  const changeBoard = (
-    <form onSubmit={handleSubmit}>
-      <input
-        ref={newBoardTitle}
-        type="text"
-        name="title"
-        autoComplete="off"
-        placeholder="Enter board name"
-      ></input>
-      <button type="submit">Change</button>
-    </form>
-  );
-
-  const showTitleChange = () => {
-    setChangeTitle((changeTitle) => !changeTitle);
+  const onModalClose = (active: boolean) => {
+    reset();
+    setModalActive({
+      ...modalActive,
+      modalAddBoard: active,
+      modalDeleteBoard: active,
+      modalChangeBoard: active,
+    });
   };
 
   return (
-    <div className={s.container}>
-      <div className="img-container">
-        <Link to={`/board/${props.id}`}>
-          <h2 className={s.title} data-id={props.id}>
-            {props.title}
-          </h2>
-        </Link>
-        <button onClick={showTitleChange}>Change board title</button>
-        {changeTitle ? changeBoard : null}
-        <button onClick={deleteBoard}>Delete board</button>
-      </div>
-    </div>
+    <>
+      <Card sx={{ maxWidth: 250, backgroundColor: '#cccccc' }}>
+        <Container>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              <Link href={`/board/${props.id}`} color="inherit" underline="hover">
+                {props.title}
+              </Link>
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Container>
+              <Button
+                size="small"
+                onClick={() => setModalActive({ ...modalActive, modalChangeBoard: true })}
+              >
+                Change
+              </Button>
+              <Button
+                size="small"
+                onClick={() => setModalActive({ ...modalActive, modalDeleteBoard: true })}
+              >
+                Delete
+              </Button>
+            </Container>
+          </CardActions>
+        </Container>
+      </Card>
+      <Modal
+        isOpened={modalActive.modalChangeBoard}
+        title={`Change  board's title`}
+        onModalClose={onModalClose}
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <span className={s.messageError}>{errors?.title?.message}</span>
+          <input
+            {...register('title', {
+              required: 'Enter a title',
+            })}
+            type="text"
+            placeholder="Enter board title..."
+            autoComplete="off"
+            className={style.inputTitle}
+          />
+          <button className={style.addCardBtnCreate} type="submit">
+            Add board
+          </button>
+        </form>
+      </Modal>
+
+      <Modal
+        isOpened={modalActive.modalDeleteBoard}
+        title={'Do you really want to delete this board?'}
+        onModalClose={onModalClose}
+      >
+        <button className={style.btnYes} onClick={deleteBoard}>
+          Yes
+        </button>
+        <button
+          className={style.btnNo}
+          onClick={() => setModalActive({ ...modalActive, modalDeleteBoard: false })}
+        >
+          No
+        </button>
+      </Modal>
+    </>
   );
 };
 

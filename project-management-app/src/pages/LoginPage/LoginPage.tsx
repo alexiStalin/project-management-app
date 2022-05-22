@@ -45,7 +45,7 @@ const LoginPage = () => {
   const error = useAppSelector((state) => state.authorization.error);
   const navigate = useNavigate();
   const location = useLocation();
-  const fromPage = (location.state as LocationState)?.from || '/main';
+  const fromPage = (location.state as LocationState)?.from || '/';
 
   const onSubmit = (data: Data) => {
     dispatch(savePassword(data.password));

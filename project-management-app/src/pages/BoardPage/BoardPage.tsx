@@ -167,7 +167,7 @@ const BoardPage = () => {
   return (
     <div>
       <div className={style.titleContainer}>
-        <Link to={`/main`} className={style.back}>
+        <Link to={`/`} className={style.back}>
           <span className={style.arrowBack}>🢐</span>Back to main
         </Link>
         <h2 className={style.title}>{board?.title}</h2>

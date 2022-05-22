@@ -5,6 +5,17 @@ import BoardItem from '../BoardItem/BoardItem';
 import { fetchGetAllBoards, fetchCreateBoard } from '../../../store/boardsSlice';
 import { connect } from 'react-redux';
 import { RootState } from '../../../store/store';
+import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  NativeSelect,
+  Select,
+} from '@mui/material';
 
 const BoardsList = () => {
   const { boards } = useAppSelector((state) => state.boards);
@@ -21,9 +32,9 @@ const BoardsList = () => {
     if (boards !== null) {
       if (boards.length !== 0) {
         return boards.map((item: BoardTitle) => (
-          <li key={item.id}>
+          <Grid item xs={12} md={4} key={item.id}>
             <BoardItem id={item.id} title={item.title} />
-          </li>
+          </Grid>
         ));
       }
     }
@@ -45,17 +56,59 @@ const BoardsList = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          ref={newBoardTitle}
-          type="text"
-          name="title"
-          autoComplete="off"
-          placeholder="Enter board name"
-        ></input>
-        <button type="submit">Create new board</button>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
+          <input
+            className={style.inputTitle}
+            style={{ margin: '0' }}
+            ref={newBoardTitle}
+            type="text"
+            name="title"
+            autoComplete="off"
+            placeholder="Enter a board name"
+          ></input>
+          <Button type="submit">Create new board</Button>
+        </Box>
       </form>
+      {/* <FormControl fullWidth>
+        <InputLabel>Choose a category</InputLabel>
+        <Select
+          // value={age}
+          label="Age"
+          // onChange={handleChange}
+        >
+          <MenuItem value={'your'}>Your boards</MenuItem>
+          <MenuItem value={'all'}>All boards</MenuItem>
+        </Select>
+      </FormControl> */}
 
-      <ul>{content}</ul>
+      <FormControl fullWidth>
+        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+          Choose a category
+        </InputLabel>
+        <NativeSelect
+          defaultValue={'all'}
+          inputProps={{
+            name: 'Choose a category',
+          }}
+        >
+          <option value={'your'}>Your boards</option>
+          <option value={'all'}>All boards</option>
+        </NativeSelect>
+      </FormControl>
+      <Box sx={{ mt: 5 }}>
+        <Grid container spacing={2}>
+          {content}
+        </Grid>
+      </Box>
     </>
   );
 };
