@@ -1,21 +1,30 @@
+.listContainer {
+  height: calc(100vh - 200px);
+}
+
 .container {
   float: left;
   box-sizing: border-box;
   display: block;
-  height: 100%;
   padding: 7px;
   margin: 0 4px;
-  /* vertical-align: top; */
   white-space: nowrap;
   width: 270px;
   background-color: #ebecf0;
   border-radius: 3px;
+
+  max-height: calc(100vh - 220px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .listTitleContainer {
   display: flex;
   justify-content: space-between;
   cursor: grab;
+  overflow-y: clip;
+  overflow-x: hidden;
 }
 
 .columnMove {
@@ -64,12 +73,19 @@
 .taskTitle {
   font-size: 17px;
   font-weight: 700;
+  max-width: 215px;
+  overflow: hidden;
+  margin: 0;
   color: #172b4d;
   pointer-events: none;
 }
 
 .taskDescription {
   font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  max-width: 215px;
+  overflow: hidden;
   pointer-events: none;
 }
 

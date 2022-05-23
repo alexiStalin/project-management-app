@@ -165,15 +165,19 @@ const BoardPage = () => {
   }
 
   return (
-    <div>
-      <div className={style.titleContainer}>
-        <Link to={`/`} className={style.back}>
-          <span className={style.arrowBack}>🢐</span>Back to main
-        </Link>
-        <h2 className={style.title}>{board?.title}</h2>
+    <div className={style.container}>
+      <div className={style.scrollContainer}>
+        <div className={style.titleContainer}>
+          <Link to={`/`} className={style.back}>
+            <span className={style.arrowBack}>🢐</span>Back to main
+          </Link>
+          <h2 className={style.title}>{board?.title}</h2>
+        </div>
+        <div className={style.listContainer}>
+          <>{content}</>
+          <AddColumn></AddColumn>
+        </div>
       </div>
-      <>{content}</>
-      <AddColumn></AddColumn>
     </div>
   );
 };
