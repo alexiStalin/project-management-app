@@ -5,6 +5,8 @@ import BoardItem from '../BoardItem/BoardItem';
 import { fetchGetAllBoards, fetchCreateBoard } from '../../../store/boardsSlice';
 import { connect } from 'react-redux';
 import { RootState } from '../../../store/store';
+import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
+import { Box, Button, Grid } from '@mui/material';
 
 const BoardsList = () => {
   const { boards } = useAppSelector((state) => state.boards);
@@ -21,9 +23,9 @@ const BoardsList = () => {
     if (boards !== null) {
       if (boards.length !== 0) {
         return boards.map((item: BoardTitle) => (
-          <li key={item.id}>
+          <Grid item xs={12} md={4} key={item.id}>
             <BoardItem id={item.id} title={item.title} />
-          </li>
+          </Grid>
         ));
       }
     }
@@ -45,20 +47,36 @@ const BoardsList = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          ref={newBoardTitle}
-          type="text"
-          name="title"
-          autoComplete="off"
-          placeholder="Enter board name"
-        ></input>
-        <button type="submit">Create new board</button>
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+            flexWrap: 'wrap',
+          }}
+        >
+          <input
+            className={style.inputTitle}
+            style={{ margin: '0' }}
+            ref={newBoardTitle}
+            type="text"
+            name="title"
+            autoComplete="off"
+            placeholder="Enter a board name"
+          ></input>
+          <Button type="submit">Create new board</Button>
+        </Box>
       </form>
 
-      <ul>{content}</ul>
+      <Box sx={{ mt: 5 }}>
+        <Grid container spacing={2}>
+          {content}
+        </Grid>
+      </Box>
     </>
   );
 };
 
-// export { BoardsList };
 export default connect((state: RootState) => ({ active: state.boards.boards }))(BoardsList);

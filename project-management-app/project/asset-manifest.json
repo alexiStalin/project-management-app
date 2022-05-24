@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.23c3d0a1.css",
+    "main.js": "/static/js/main.660aa53e.js",
+    "static/js/787.6ccdce3c.chunk.js": "/static/js/787.6ccdce3c.chunk.js",
+    "static/media/alexi.jpg": "/static/media/alexi.0d5ce5c3f52646a935a2.jpg",
+    "static/media/rs_school_js.svg": "/static/media/rs_school_js.ad178c0df28bc133be34b982d62f431d.svg",
+    "index.html": "/index.html",
+    "main.23c3d0a1.css.map": "/static/css/main.23c3d0a1.css.map",
+    "main.660aa53e.js.map": "/static/js/main.660aa53e.js.map",
+    "787.6ccdce3c.chunk.js.map": "/static/js/787.6ccdce3c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.23c3d0a1.css",
+    "static/js/main.660aa53e.js"
+  ]
+}

@@ -3,33 +3,31 @@ import { SettingList } from '../../components/MainPageComponents/SettingList/Set
 import BoardsList from '../../components/MainPageComponents/BoardsList/BoardsList';
 
 import s from './MainPage.module.css';
-import Modal from '../../components/Modal/Modal';
+import { ListItemIcon, MenuItem } from '@mui/material';
+import { Settings } from '@mui/icons-material';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const MainPage = () => {
   const [state, setState] = useState(true);
 
   return (
     <>
-      <h1>MainPage</h1>
       <div className={s.container}>
         <div>
           <nav>
-            <ul>
-              <li className={s.point} onClick={() => setState(true)}>
-                Boards
-              </li>
-              <li className={s.point} onClick={() => setState(false)}>
-                Setting
-              </li>
-            </ul>
+            <MenuItem onClick={() => setState(true)}>
+              <ListItemIcon>
+                <ArticleIcon fontSize="small" />
+              </ListItemIcon>
+              Boards
+            </MenuItem>
+            <MenuItem onClick={() => setState(false)}>
+              <ListItemIcon>
+                <Settings fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
           </nav>
-          {/* <Modal isOpened={false} title={'Are you shure?'}>
-            <form>
-              <input type="text" name="title" placeholder="title"></input>
-              <input type="text" name="description" placeholder="description"></input>
-              <button type="submit">Create</button>
-            </form>
-          </Modal> */}
         </div>
         <div>{state ? <BoardsList /> : <SettingList />}</div>
       </div>

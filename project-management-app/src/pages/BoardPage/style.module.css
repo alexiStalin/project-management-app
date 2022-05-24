@@ -1,3 +1,8 @@
+/* .container {
+  overflow-y: hidden;
+  overflow-x: auto;
+} */
+
 .titleContainer {
   display: flex;
 }
@@ -52,6 +57,14 @@
   width: 272px;
   scroll-snap-align: center;
   margin-left: 12px;
+}
+
+.listContainer {
+  display: flex;
+  height: calc(100vh - 200px);
+  width: 100vw;
+  overflow-y: clip;
+  overflow-x: auto;
 }
 
 .column {

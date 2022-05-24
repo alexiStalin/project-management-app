@@ -29,15 +29,15 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<WelcomePage />}></Route>
         <Route
-          path="main"
+          index
           element={
             <RequireAuth>
               <MainPage />
             </RequireAuth>
           }
         ></Route>
+        <Route path="welcome" element={<WelcomePage />}></Route>
         <Route
           path="board"
           element={

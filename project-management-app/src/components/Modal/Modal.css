@@ -11,6 +11,7 @@
   opacity: 0;
   transition: 0.5s;
   pointer-events: none;
+  z-index: 10000000;
 }
 
 .modalActive {
@@ -76,7 +77,7 @@
 .modal__body {
   max-width: 500px;
   margin: auto;
-  margin-top: 5%;
+  margin-top: 10%;
   padding: 20px;
   border-radius: 12px;
   background-color: white;
