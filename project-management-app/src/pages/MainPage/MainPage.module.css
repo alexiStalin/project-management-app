@@ -1,0 +1,15 @@
+.container {
+  display: grid;
+  grid-template-columns: 300px 800px;
+  width: 1000px;
+  padding: 25px 40px;
+  margin: auto;
+}
+
+ul {
+  list-style: none;
+}
+
+.point {
+  cursor: pointer;
+}
