@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/project-management-app/static/css/main.bca393c9.css",
-    "main.js": "/project-management-app/static/js/main.03030146.js",
-    "static/js/787.6ccdce3c.chunk.js": "/project-management-app/static/js/787.6ccdce3c.chunk.js",
-    "static/media/alexi.jpg": "/project-management-app/static/media/alexi.0d5ce5c3f52646a935a2.jpg",
-    "static/media/rs_school_js.svg": "/project-management-app/static/media/rs_school_js.ad178c0df28bc133be34b982d62f431d.svg",
-    "index.html": "/project-management-app/index.html",
-    "main.bca393c9.css.map": "/project-management-app/static/css/main.bca393c9.css.map",
-    "main.03030146.js.map": "/project-management-app/static/js/main.03030146.js.map",
-    "787.6ccdce3c.chunk.js.map": "/project-management-app/static/js/787.6ccdce3c.chunk.js.map"
+    "main.css": "/static/css/main.23c3d0a1.css",
+    "main.js": "/static/js/main.860200a7.js",
+    "static/js/787.6ccdce3c.chunk.js": "/static/js/787.6ccdce3c.chunk.js",
+    "static/media/alexi.jpg": "/static/media/alexi.0d5ce5c3f52646a935a2.jpg",
+    "static/media/rs_school_js.svg": "/static/media/rs_school_js.ad178c0df28bc133be34b982d62f431d.svg",
+    "index.html": "/index.html",
+    "main.23c3d0a1.css.map": "/static/css/main.23c3d0a1.css.map",
+    "main.860200a7.js.map": "/static/js/main.860200a7.js.map",
+    "787.6ccdce3c.chunk.js.map": "/static/js/787.6ccdce3c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bca393c9.css",
-    "static/js/main.03030146.js"
+    "static/css/main.23c3d0a1.css",
+    "static/js/main.860200a7.js"
   ]
 }
