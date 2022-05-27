@@ -4,7 +4,8 @@ import { fetchGetAllBoards, fetchDeleteBoard, fetchUpdateBoard } from '../../../
 import { useForm } from 'react-hook-form';
 import s from './BoardItem.module.css';
 import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
-import { Card, CardContent, Typography, CardActions, Button, Link, Grid } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button, Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Container } from '@mui/system';
 import Modal from '../../Modal/Modal';
 
@@ -63,9 +64,11 @@ const BoardItem = (props: MyProps) => {
         <Container>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              <Link href={`/board/${props.id}`} color="inherit" underline="hover">
-                {props.title}
-              </Link>
+              <Button size="large" color="inherit">
+                <Link to={`/board/${props.id}`} style={{ textDecoration: 'none' }}>
+                  {props.title}
+                </Link>
+              </Button>
             </Typography>
           </CardContent>
           <CardActions>
