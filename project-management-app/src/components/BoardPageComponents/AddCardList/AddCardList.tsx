@@ -1,4 +1,4 @@
-import React, { useState, DragEvent } from 'react';
+import React, { useState, DragEvent, useMemo } from 'react';
 import { BoardColumn, BoardColumnTask, BoardTitle } from '../../../store/types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import ModalCreateTask from '../ModalCreateTask/ModalCreateTask';
@@ -175,10 +175,9 @@ const AddCardList = (props: MyProps) => {
         sortTasks.sort((a, b) => a.order - b.order);
         return sortTasks.map((card) => {
           return (
-            <>
+            <div key={card.id}>
               <div
                 className={s.cardPoint}
-                key={card.id}
                 draggable={true}
                 onDragStart={(e) => dragStartHandler(e, card)}
                 onDragLeave={(e) => dragLeaveHandler(e)}
@@ -189,8 +188,8 @@ const AddCardList = (props: MyProps) => {
               >
                 <div className={s.taskCardContainer} style={{ pointerEvents: 'none' }}>
                   <div>
-                    <div className={s.taskTitle}>{card.title}</div>
-                    <div className={s.taskDescription}>{card.description}</div>
+                    <h5 className={s.taskTitle}>{card.title}</h5>
+                    <h6 className={s.taskDescription}>{card.description}</h6>
                   </div>
                   <div className={s.btnContainer}>
                     <button
@@ -225,7 +224,7 @@ const AddCardList = (props: MyProps) => {
                 onModalClose={onModalClose}
                 isOpen={modalActive.modalUpdateTask}
               />
-            </>
+            </div>
           );
         });
       }
@@ -252,6 +251,7 @@ const AddCardList = (props: MyProps) => {
       modalUpdateTask: active,
     });
   };
+
   const content = renderCards();
 
   const [columnTitleChange, setColumnTitleChange] = useState(false);
@@ -269,7 +269,7 @@ const AddCardList = (props: MyProps) => {
   };
 
   return (
-    <>
+    <div className={s.listContainer}>
       <div className={s.container}>
         <div className={s.listTitleContainer}>
           <div>
@@ -320,7 +320,7 @@ const AddCardList = (props: MyProps) => {
         onModalClose={onModalClose}
         deleteColumn={deleteColumn}
       />
-    </>
+    </div>
   );
 };
 

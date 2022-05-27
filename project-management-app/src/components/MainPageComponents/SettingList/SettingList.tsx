@@ -1,4 +1,4 @@
-import React, { RefObject, createRef } from 'react';
+import React, { RefObject, createRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
   fetchSignUp,
@@ -7,9 +7,12 @@ import {
   fetchDeleteUser,
   savePassword,
 } from '../../../store/autorizationSlice';
+import Modal from '../../Modal/Modal';
 import s from './SettingList.module.css';
+import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
 
 const SettingList = () => {
+  const [modalActive, setModalActive] = useState(false);
   const dispatch = useAppDispatch();
   const { user, token, password } = useAppSelector((state) => state.authorization);
 
@@ -66,6 +69,10 @@ const SettingList = () => {
     }
   };
 
+  const onModalClose = (active: boolean) => {
+    setModalActive(active);
+  };
+
   return (
     <>
       <div className={s.settingPage}>
@@ -119,10 +126,26 @@ const SettingList = () => {
           <button type="submit">Save changes</button>
         </form>
 
-        <button className={s.btn} onClick={() => dispatch(fetchDeleteUser(token))}>
+        <button
+          className={s.btn}
+          onClick={() => setModalActive(true)}
+          style={{ backgroundColor: '#af4c4c' }}
+        >
           Delete account
         </button>
       </div>
+      <Modal
+        isOpened={modalActive}
+        title={'Do you really want to delete your account?'}
+        onModalClose={onModalClose}
+      >
+        <button className={style.btnYes} onClick={() => dispatch(fetchDeleteUser(token))}>
+          Yes
+        </button>
+        <button className={style.btnNo} onClick={() => setModalActive(false)}>
+          No
+        </button>
+      </Modal>
     </>
   );
 };
