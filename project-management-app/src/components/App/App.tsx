@@ -37,16 +37,16 @@ const App = () => {
             </RequireAuth>
           }
         ></Route>
-        <Route path="welcome" element={<WelcomePage />}></Route>
-        <Route
+        <Route path="/board/:boardId" element={<BoardPage />}></Route>
+        <Route path="/welcome" element={<WelcomePage />}></Route>
+        {/* <Route
           path="board"
           element={
             <RequireAuth>
               <BoardPage />
             </RequireAuth>
           }
-        ></Route>
-        <Route path="board/:boardId" element={<BoardPage />}></Route>
+        ></Route> */}
         <Route
           path="login"
           element={
@@ -56,7 +56,7 @@ const App = () => {
           }
         ></Route>
         <Route
-          path="signup"
+          path="/signup"
           element={
             <RequireAuthSignIn>
               <SignUpPage />
