@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { SettingList } from '../../components/MainPageComponents/SettingList/SettingList';
 import BoardsList from '../../components/MainPageComponents/BoardsList/BoardsList';
 
+import { useTranslation } from 'react-i18next';
+
 import s from './MainPage.module.css';
 import { ListItemIcon, MenuItem } from '@mui/material';
 import { Settings } from '@mui/icons-material';
@@ -9,6 +11,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 
 const MainPage = () => {
   const [state, setState] = useState(true);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -19,13 +22,13 @@ const MainPage = () => {
               <ListItemIcon>
                 <ArticleIcon fontSize="small" />
               </ListItemIcon>
-              Boards
+              {t('boards')}
             </MenuItem>
             <MenuItem onClick={() => setState(false)}>
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>
-              Settings
+              {t('settings')}
             </MenuItem>
           </nav>
         </div>

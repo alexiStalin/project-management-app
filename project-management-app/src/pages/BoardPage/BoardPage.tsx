@@ -7,6 +7,7 @@ import AddColumn from '../../components/BoardPageComponents/AddColumn/AddColumn'
 import { RootState } from '../../store/store';
 import { AddCardList } from '../../components/BoardPageComponents/AddCardList/AddCardList';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import s from '../../components/BoardPageComponents/AddCardList/AddCardList.module.css';
 import style from './style.module.css';
@@ -18,6 +19,7 @@ const BoardPage = () => {
   const dispatch = useAppDispatch();
   const { board, currentCard, currentColumn } = useAppSelector((state) => state.boards);
   const userId = useAppSelector((state) => state.authorization.user?.id);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (boardId) {
@@ -169,7 +171,8 @@ const BoardPage = () => {
       <div className={style.scrollContainer}>
         <div className={style.titleContainer}>
           <Link to={`/`} className={style.back}>
-            <span className={style.arrowBack}>🢐</span>Back to main
+            <span className={style.arrowBack}>🢐</span>
+            {t('back_to_main')}
           </Link>
           <h2 className={style.title}>{board?.title}</h2>
         </div>

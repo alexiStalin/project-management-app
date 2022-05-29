@@ -1,5 +1,6 @@
 import { BoardColumnTask } from '../../../store/types';
 import Modal from '../../Modal/Modal';
+import { useTranslation } from 'react-i18next';
 import s from './style.module.css';
 
 type MyProps = {
@@ -11,17 +12,14 @@ type MyProps = {
 
 const ModalDeleteTask = (props: MyProps) => {
   const { isOpen, deleteTask, onModalClose, card } = props;
+  const { t } = useTranslation();
   return (
-    <Modal
-      isOpened={isOpen}
-      title={'Do you really want to delete this task?'}
-      onModalClose={onModalClose}
-    >
+    <Modal isOpened={isOpen} title={t('do_you_want_delete_task')} onModalClose={onModalClose}>
       <button className={s.btnYes} onClick={() => deleteTask(card)}>
-        Yes
+        {t('yes')}
       </button>
       <button className={s.btnNo} onClick={() => onModalClose(false)}>
-        No
+        {t('no')}
       </button>
     </Modal>
   );

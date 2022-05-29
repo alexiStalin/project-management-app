@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchSignUp, deleteError } from '../../store/autorizationSlice';
+import { useTranslation } from 'react-i18next';
 import s from './SignUpPage.module.css';
 
 type Data = {
@@ -30,6 +31,8 @@ const SignUpPage = () => {
     shouldFocusError: false,
   });
 
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const error = useAppSelector((state) => state.authorization.error);
 
@@ -46,15 +49,15 @@ const SignUpPage = () => {
     <div className={s.loginPage}>
       <div className={s.form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={s.title}>Sign up for your account</div>
+          <div className={s.title}>{t('sign_up_acc')}</div>
           <span className={s.messageError}>{errors?.name?.message}</span>
           <input
             {...register('name', {
-              required: 'Name must be of length 2 or higher',
+              required: t('name_err'),
               minLength: 2,
             })}
             type="text"
-            placeholder="Name"
+            placeholder={t('name_reg')}
             name="name"
             autoComplete="off"
           />
@@ -62,11 +65,11 @@ const SignUpPage = () => {
           <span className={s.messageError}>{errors?.login?.message}</span>
           <input
             {...register('login', {
-              required: 'Login must be of length 2 or higher',
+              required: t('login_err'),
               minLength: 2,
             })}
             type="text"
-            placeholder="Login"
+            placeholder={t('login')}
             name="login"
             autoComplete="off"
             onChange={() => {
@@ -76,19 +79,19 @@ const SignUpPage = () => {
           <span className={s.messageError}>{errors?.password?.message}</span>
           <input
             {...register('password', {
-              required: 'Password must be of length 2 or higher',
+              required: t('pass_err'),
               minLength: 2,
             })}
             type="password"
-            placeholder="Password"
+            placeholder={t('password')}
             name="password"
             autoComplete="off"
           />
           <button type="submit" disabled={!isValid}>
-            create
+            {t('create')}
           </button>
           <p className={s.messageError}>
-            Already registered? <NavLink to="/login">Login</NavLink>
+            {t('already_registered')} <NavLink to="/login">{t('log_in')}</NavLink>
           </p>
         </form>
       </div>

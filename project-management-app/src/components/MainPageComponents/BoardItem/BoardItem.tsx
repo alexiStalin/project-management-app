@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../hooks/hooks';
 import { fetchGetAllBoards, fetchDeleteBoard, fetchUpdateBoard } from '../../../store/boardsSlice';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import s from './BoardItem.module.css';
 import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
 import { Card, CardContent, Typography, CardActions, Button, Grid } from '@mui/material';
@@ -20,6 +21,7 @@ type Data = {
 const BoardItem = (props: MyProps) => {
   const token = useAppSelector((state) => state.authorization.token);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const [modalActive, setModalActive] = useState({
     modalAddBoard: false,
@@ -77,13 +79,13 @@ const BoardItem = (props: MyProps) => {
                 size="small"
                 onClick={() => setModalActive({ ...modalActive, modalChangeBoard: true })}
               >
-                Change
+                {t('change')}
               </Button>
               <Button
                 size="small"
                 onClick={() => setModalActive({ ...modalActive, modalDeleteBoard: true })}
               >
-                Delete
+                {t('delete')}
               </Button>
             </Container>
           </CardActions>
@@ -91,39 +93,39 @@ const BoardItem = (props: MyProps) => {
       </Card>
       <Modal
         isOpened={modalActive.modalChangeBoard}
-        title={`Change  board's title`}
+        title={t('change_b_title')}
         onModalClose={onModalClose}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <span className={s.messageError}>{errors?.title?.message}</span>
           <input
             {...register('title', {
-              required: 'Enter a title',
+              required: t('enter_a_title'),
             })}
             type="text"
-            placeholder="Enter board title..."
+            placeholder={t('enter_a_board_title')}
             autoComplete="off"
             className={style.inputTitle}
           />
           <button className={style.addCardBtnCreate} type="submit">
-            Add board
+            {t('add_board')}
           </button>
         </form>
       </Modal>
 
       <Modal
         isOpened={modalActive.modalDeleteBoard}
-        title={'Do you really want to delete this board?'}
+        title={t('do_you_want_delete_board')}
         onModalClose={onModalClose}
       >
         <button className={style.btnYes} onClick={deleteBoard}>
-          Yes
+          {t('yes')}
         </button>
         <button
           className={style.btnNo}
           onClick={() => setModalActive({ ...modalActive, modalDeleteBoard: false })}
         >
-          No
+          {t('no')}
         </button>
       </Modal>
     </>
