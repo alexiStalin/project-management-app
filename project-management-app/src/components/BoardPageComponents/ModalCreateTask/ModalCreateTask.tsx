@@ -1,5 +1,6 @@
 import Modal from '../../Modal/Modal';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { fetchCreateTask, fetchGetAllTasks } from '../../../store/tasksSlice';
 import { useAppDispatch } from '../../../hooks/hooks';
 import { fetchGetBoardById } from '../../../store/boardsSlice';
@@ -21,6 +22,7 @@ type MyProps = {
 
 const ModalCreateTask = (props: MyProps) => {
   const { boardId, columnId, userId, isOpen, onModalClose } = props;
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -57,30 +59,30 @@ const ModalCreateTask = (props: MyProps) => {
     });
   };
   return (
-    <Modal isOpened={isOpen} title={'Add a list'} onModalClose={onModalClose} reset={reset}>
+    <Modal isOpened={isOpen} title={t('add_task')} onModalClose={onModalClose} reset={reset}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <span className={s.messageError}>{errors?.title?.message}</span>
         <input
           {...register('title', {
-            required: 'Enter a title',
+            required: t('enter_a_title'),
           })}
           type="text"
-          placeholder="Enter a title for this card..."
+          placeholder={t('enter_title_for_task')}
           autoComplete="off"
           className={s.inputTitle}
         />
         <span className={s.messageError}>{errors?.description?.message}</span>
         <input
           {...register('description', {
-            required: 'Enter a description',
+            required: t('enter_task_description'),
           })}
           type="text"
-          placeholder="Enter a description for this card..."
+          placeholder={t('enter_task_description_for_card')}
           autoComplete="off"
           className={s.inputTitle}
         />
         <button className={s.addCardBtnCreate} type="submit">
-          Add card
+          {t('add_task')}
         </button>
       </form>
     </Modal>

@@ -1,4 +1,4 @@
-import React, { useState, DragEvent, useMemo } from 'react';
+import React, { useState, DragEvent } from 'react';
 import { BoardColumn, BoardColumnTask, BoardTitle } from '../../../store/types';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import ModalCreateTask from '../ModalCreateTask/ModalCreateTask';
@@ -9,6 +9,7 @@ import {
 } from '../../../store/boardsSlice';
 import s from './AddCardList.module.css';
 import { fetchCreateTask, fetchDeleteTask, fetchUpdateTask } from '../../../store/tasksSlice';
+import { useTranslation } from 'react-i18next';
 import { fetchDeleteColumn, fetchUpdateColumn } from '../../../store/columnsSlice';
 import ModalDeleteColumn from '../ModalDeleteColumn';
 import ModalDeleteTask from '../ModalDeleteTask';
@@ -26,6 +27,8 @@ const AddCardList = (props: MyProps) => {
     modalDeleteTask: false,
     modalDeleteColumn: false,
   });
+
+  const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
   const { board, currentCard, currentColumnOrder } = useAppSelector((state) => state.boards);
@@ -304,7 +307,7 @@ const AddCardList = (props: MyProps) => {
           className={s.addCardBtn}
         >
           <span></span>
-          <span className={s.iconAdd}>+ Add a card</span>
+          <span className={s.iconAdd}>+ {t('add_task')}</span>
         </button>
       </div>
       <ModalCreateTask

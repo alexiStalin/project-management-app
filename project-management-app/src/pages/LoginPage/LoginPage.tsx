@@ -10,6 +10,7 @@ import {
   savePassword,
 } from '../../store/autorizationSlice';
 import { Token } from '../../store/types';
+import { useTranslation } from 'react-i18next';
 import s from '../SignUpPage/SignUpPage.module.css';
 
 type Data = {
@@ -29,6 +30,8 @@ const LoginPage = () => {
     dispatch(deleteError());
     // eslint-disable-next-line
   }, []);
+
+  const { t } = useTranslation();
 
   const {
     register,
@@ -67,14 +70,14 @@ const LoginPage = () => {
             dispatch(deleteError());
           }}
         >
-          <div className={s.title}>Log in to your account</div>
+          <div className={s.title}>{t('login_to_your_acc')}</div>
           <span className={s.messageError}>{error}</span>
           <input
             {...register('login', {
               required: true,
             })}
             type="text"
-            placeholder="Login"
+            placeholder={t('login')}
             name="login"
             autoComplete="off"
           />
@@ -83,15 +86,15 @@ const LoginPage = () => {
               required: true,
             })}
             type="password"
-            placeholder="Password"
+            placeholder={t('password')}
             name="password"
             autoComplete="off"
           />
           <button type="submit" disabled={!isValid}>
-            login
+            {t('log_in')}
           </button>
           <p className={s.message}>
-            Not registered? <NavLink to="/signup">Create an account</NavLink>
+            {t('not_registered')} <NavLink to="/signup">{t('creare_an_acc')}</NavLink>
           </p>
         </form>
       </div>

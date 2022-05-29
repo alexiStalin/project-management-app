@@ -7,6 +7,7 @@ import {
   fetchDeleteUser,
   savePassword,
 } from '../../../store/autorizationSlice';
+import { useTranslation } from 'react-i18next';
 import Modal from '../../Modal/Modal';
 import s from './SettingList.module.css';
 import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
@@ -15,6 +16,7 @@ const SettingList = () => {
   const [modalActive, setModalActive] = useState(false);
   const dispatch = useAppDispatch();
   const { user, token, password } = useAppSelector((state) => state.authorization);
+  const { t } = useTranslation();
 
   const name: RefObject<HTMLInputElement> = createRef();
   const login: RefObject<HTMLInputElement> = createRef();
@@ -77,53 +79,53 @@ const SettingList = () => {
     <>
       <div className={s.settingPage}>
         <form className={s.form} onSubmit={handleSubmitName}>
-          <label className={s.title}>Change your name</label>
+          <label className={s.title}>{t('change_your_name')}</label>
           <input
             ref={name}
             type="text"
             name="name"
             autoComplete="off"
-            placeholder="Enter new name"
+            placeholder={t('enter_new_name')}
           ></input>
 
-          <button type="submit">Save changes</button>
+          <button type="submit">{t('save_changes')}</button>
         </form>
         <form className={s.form} onSubmit={handleSubmitLogin}>
-          <label className={s.title}>Change your login</label>
+          <label className={s.title}>{t('change_your_login')}</label>
           <input
             ref={login}
             type="text"
             name="login"
             autoComplete="off"
-            placeholder="Enter new login"
+            placeholder={t('enter_new_login')}
           ></input>
 
-          <button type="submit">Save changes</button>
+          <button type="submit">{t('save_changes')}</button>
         </form>
         <form className={s.form} onSubmit={handleSubmitPassword}>
-          <label className={s.title}>Change your password</label>
+          <label className={s.title}>{t('change_your_password')}</label>
           <input
             ref={passwordOld}
             type="password"
             name="password"
             autoComplete="off"
-            placeholder="Enter password"
+            placeholder={t('enter_password')}
           ></input>
           <input
             ref={passwordNew}
             type="password"
             name="password"
             autoComplete="off"
-            placeholder="Enter new password"
+            placeholder={t('enter_new_password')}
           ></input>
           <input
             ref={passwordNewRepeat}
             type="password"
             name="password"
             autoComplete="off"
-            placeholder="Repeat new password"
+            placeholder={t('repeat_new_password')}
           ></input>
-          <button type="submit">Save changes</button>
+          <button type="submit">{t('save_changes')}</button>
         </form>
 
         <button
@@ -131,19 +133,19 @@ const SettingList = () => {
           onClick={() => setModalActive(true)}
           style={{ backgroundColor: '#af4c4c' }}
         >
-          Delete account
+          {t('delete_acc')}
         </button>
       </div>
       <Modal
         isOpened={modalActive}
-        title={'Do you really want to delete your account?'}
+        title={t('do_you_want_to_delete_acc')}
         onModalClose={onModalClose}
       >
         <button className={style.btnYes} onClick={() => dispatch(fetchDeleteUser(token))}>
-          Yes
+          {t('yes')}
         </button>
         <button className={style.btnNo} onClick={() => setModalActive(false)}>
-          No
+          {t('no')}
         </button>
       </Modal>
     </>

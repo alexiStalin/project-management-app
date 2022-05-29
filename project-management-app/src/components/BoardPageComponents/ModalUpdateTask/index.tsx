@@ -4,7 +4,7 @@ import { fetchUpdateTask } from '../../../store/tasksSlice';
 import { useAppDispatch } from '../../../hooks/hooks';
 import { fetchGetBoardById } from '../../../store/boardsSlice';
 import { BoardColumnTask } from '../../../store/types';
-
+import { useTranslation } from 'react-i18next';
 import s from './style.module.css';
 
 type Data = {
@@ -33,6 +33,8 @@ const ModalUpdateTask = (props: MyProps) => {
     shouldFocusError: true,
   });
 
+  const { t } = useTranslation();
+
   const onSubmit = async (data: Data) => {
     if (userId !== undefined) {
       await dispatch(
@@ -53,15 +55,15 @@ const ModalUpdateTask = (props: MyProps) => {
     }
   };
   return (
-    <Modal isOpened={isOpen} title={'Update the task'} onModalClose={onModalClose} reset={reset}>
+    <Modal isOpened={isOpen} title={t('update_task')} onModalClose={onModalClose} reset={reset}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <span className={s.messageError}>{errors?.title?.message}</span>
         <input
           {...register('title', {
-            required: 'Enter a title',
+            required: t('enter_a_title'),
           })}
           type="text"
-          placeholder="Enter a title for this card..."
+          placeholder={t('enter_title_for_task')}
           autoComplete="off"
           className={s.inputTitle}
           defaultValue={card.title}
@@ -69,16 +71,16 @@ const ModalUpdateTask = (props: MyProps) => {
         <span className={s.messageError}>{errors?.description?.message}</span>
         <input
           {...register('description', {
-            required: 'Enter a description',
+            required: t('enter_task_description'),
           })}
           type="text"
-          placeholder="Enter a description for this card..."
+          placeholder={t('enter_task_description_for_card')}
           autoComplete="off"
           className={s.inputTitle}
           defaultValue={card.description}
         />
         <button className={s.addCardBtnCreate} type="submit">
-          Update
+          {t('update')}
         </button>
       </form>
     </Modal>

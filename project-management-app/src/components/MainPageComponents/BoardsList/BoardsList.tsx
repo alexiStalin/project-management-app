@@ -5,6 +5,7 @@ import BoardItem from '../BoardItem/BoardItem';
 import { fetchGetAllBoards, fetchCreateBoard } from '../../../store/boardsSlice';
 import { connect } from 'react-redux';
 import { RootState } from '../../../store/store';
+import { useTranslation } from 'react-i18next';
 import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
 import { Box, Button, Grid } from '@mui/material';
 
@@ -13,6 +14,7 @@ const BoardsList = () => {
   const token = useAppSelector((state) => state.authorization.token);
   const dispatch = useAppDispatch();
   const newBoardTitle: RefObject<HTMLInputElement> = createRef();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(fetchGetAllBoards(token));
@@ -64,9 +66,9 @@ const BoardsList = () => {
             type="text"
             name="title"
             autoComplete="off"
-            placeholder="Enter a board name"
+            placeholder={t('enter_a_board_name')}
           ></input>
-          <Button type="submit">Create new board</Button>
+          <Button type="submit">{t('create')}</Button>
         </Box>
       </form>
 

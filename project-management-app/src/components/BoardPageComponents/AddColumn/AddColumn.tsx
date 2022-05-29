@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { fetchGetBoardById } from '../../../store/boardsSlice';
 import { fetchCreateColumn, fetchGetAllColumns } from '../../../store/columnsSlice';
 import { RootState } from '../../../store/store';
+import { useTranslation } from 'react-i18next';
 import Modal from '../../Modal/Modal';
 
 import s from './AddColumn.module.css';
@@ -19,6 +20,8 @@ const AddColumn = () => {
     modalAddColumn: false,
     modalDeleteColumn: false,
   });
+
+  const { t } = useTranslation();
 
   const columns = useAppSelector((state) => state.columns.columns);
   const dispatch = useAppDispatch();
@@ -68,23 +71,27 @@ const AddColumn = () => {
           className={s.addListBtn}
         >
           <span></span>
-          <span className={s.iconAdd}>+ Add a list</span>
+          <span className={s.iconAdd}>+ {t('add_card')}</span>
         </button>
       </div>
-      <Modal isOpened={modalActive.modalAddColumn} title={'Add a list'} onModalClose={onModalClose}>
+      <Modal
+        isOpened={modalActive.modalAddColumn}
+        title={t('add_card')}
+        onModalClose={onModalClose}
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <span className={s.messageError}>{errors?.title?.message}</span>
           <input
             {...register('title', {
-              required: 'Enter a title',
+              required: t('enter_a_title'),
             })}
             type="text"
-            placeholder="Enter list title..."
+            placeholder={t('enter_a_list_title')}
             autoComplete="off"
             className={s.inputTitle}
           />
           <button className={s.addListBtnCreate} type="submit">
-            Add card
+            {t('add_card')}
           </button>
         </form>
       </Modal>

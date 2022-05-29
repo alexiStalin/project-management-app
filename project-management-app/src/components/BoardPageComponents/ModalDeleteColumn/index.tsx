@@ -1,5 +1,6 @@
 import Modal from '../../Modal/Modal';
 import s from './style.module.css';
+import { useTranslation } from 'react-i18next';
 
 type MyProps = {
   deleteColumn: () => void;
@@ -8,17 +9,16 @@ type MyProps = {
 };
 
 const ModalDeleteColumn = (props: MyProps) => {
+  const { t } = useTranslation();
   const { isOpen, deleteColumn, onModalClose } = props;
   return (
-    <Modal
-      isOpened={isOpen}
-      title={'Do you really want to delete this column?'}
-      onModalClose={onModalClose}
-    >
+    <Modal isOpened={isOpen} title={t('do_you_want_to_delete_column')} onModalClose={onModalClose}>
       <button className={s.btnYes} onClick={deleteColumn}>
-        Yes
+        {t('yes')}
       </button>
-      <button className={s.btnNo}>No</button>
+      <button className={s.btnNo} onClick={() => onModalClose(false)}>
+        {t('no')}
+      </button>
     </Modal>
   );
 };
