@@ -154,22 +154,15 @@ const fetchUpdateTask = createAsyncThunk<
 const BoardsSlice = createSlice({
   name: 'columns',
   initialState,
-  reducers: {
-    // changeBoard: (state, action: PayloadAction<BoardTitle>) => {
-    //   state.board = action.payload;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchGetAllTasks.fulfilled, (state, action) => {
         state.tasks = action.payload;
       })
-      .addCase(fetchCreateTask.fulfilled, (state) => {})
       .addCase(fetchGetTaskById.fulfilled, (state, action) => {
         state.task = action.payload;
       })
-      .addCase(fetchDeleteTask.fulfilled, (state) => {})
-      .addCase(fetchUpdateTask.fulfilled, (state) => {})
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       })

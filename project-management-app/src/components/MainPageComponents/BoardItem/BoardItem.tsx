@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import s from './BoardItem.module.css';
 import style from '../../BoardPageComponents/AddCardList/AddCardList.module.css';
-import { Card, CardContent, Typography, CardActions, Button, Grid } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Container } from '@mui/system';
 import Modal from '../../Modal/Modal';

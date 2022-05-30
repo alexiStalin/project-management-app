@@ -1,8 +1,6 @@
 import React, { RefObject, createRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import {
-  fetchSignUp,
-  deleteError,
   fetchChangeUserParams,
   fetchDeleteUser,
   savePassword,
