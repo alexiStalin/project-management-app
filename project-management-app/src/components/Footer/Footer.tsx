@@ -1,7 +1,6 @@
 import { AppBar, Box, Container, Toolbar, Link } from '@mui/material';
 import schoolLogo from '../../assets/rs_school_js.svg';
 import gitLogo from '../../assets/git.png';
-// import './Footer.css';
 
 const Footer = () => {
   return (

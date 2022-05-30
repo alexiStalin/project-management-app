@@ -133,22 +133,15 @@ const fetchUpdateColumn = createAsyncThunk<
 const BoardsSlice = createSlice({
   name: 'columns',
   initialState,
-  reducers: {
-    // changeBoard: (state, action: PayloadAction<BoardTitle>) => {
-    //   state.board = action.payload;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchGetAllColumns.fulfilled, (state, action) => {
         state.columns = action.payload;
       })
-      // .addCase(fetchCreateColumn.fulfilled, (state) => {})
       .addCase(fetchGetColumnById.fulfilled, (state, action) => {
         state.column = action.payload;
       })
-      // .addCase(fetchDeleteColumn.fulfilled, (state) => {})
-      // .addCase(fetchUpdateColumn.fulfilled, (state) => {})
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.error = action.payload;
       })

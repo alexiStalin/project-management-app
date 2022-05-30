@@ -143,7 +143,6 @@ const BoardPage = () => {
         sortBoard.sort((a, b) => a.order - b.order);
         return sortBoard.map((data) => (
           <div
-            // className={style.columnContainer}
             key={data.id}
             draggable={true}
             onDragStart={(e) => dragColumnStartHandler(e, data)}
