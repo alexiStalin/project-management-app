@@ -1,0 +1,275 @@
+.listContainer {
+  height: calc(100vh - 200px);
+}
+
+.container {
+  float: left;
+  box-sizing: border-box;
+  display: block;
+  padding: 7px;
+  margin: 0 4px;
+  white-space: nowrap;
+  width: 270px;
+  background-color: #ebecf0;
+  border-radius: 3px;
+
+  max-height: calc(100vh - 220px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.listTitleContainer {
+  display: flex;
+  justify-content: space-between;
+  cursor: grab;
+  overflow-y: clip;
+  overflow-x: hidden;
+}
+
+.columnMove {
+  margin-right: 0 10px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.listTitle {
+  display: inline-block;
+  margin: 0;
+  padding: 6px 0;
+  margin-left: 7px;
+  text-align: left;
+  font-size: 17px;
+}
+
+.columnTitleInput {
+  padding: 3px 0;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 6px;
+  width: calc(100% - 30px);
+  font-weight: 700;
+  font-size: 17px;
+  border-radius: 3px;
+}
+
+.columnDelete {
+  width: 20px;
+  cursor: pointer;
+}
+
+.cardPoint {
+  margin: 0 auto 7px;
+  padding: 7px;
+  width: 240px;
+  text-decoration: none;
+  text-align: left;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 #091e4240;
+  z-index: 2;
+}
+
+.taskTitle {
+  font-size: 17px;
+  font-weight: 700;
+  max-width: 215px;
+  overflow: hidden;
+  margin: 0;
+  color: #172b4d;
+  pointer-events: none;
+}
+
+.taskDescription {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  max-width: 215px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.addCardBtn {
+  background-color: initial;
+  min-height: 40px;
+  border: none;
+  color: #5e6c84;
+  padding: 6px 8px;
+  opacity: 1;
+  transition: opacity 0.3;
+  cursor: pointer;
+}
+
+.addCardBtn:hover,
+.addCardBtn:active,
+.addCardBtn:focus {
+  opacity: 0.8;
+}
+
+.inputTitle {
+  display: block;
+  padding: 8px 12px;
+  margin: 7px auto 0;
+  width: 240px;
+  height: auto;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #172b4d;
+  background-color: #fafbfc;
+  border: none;
+  border-radius: 3px;
+  resize: none;
+  box-shadow: inset 0 0 0 2px #dfe1e6;
+}
+
+.taskCardContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnContainer {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  z-index: 41;
+  pointer-events: all;
+}
+
+.taskEditBtn,
+.taskDeleteBtn {
+  border: none;
+  background-color: transparent;
+  padding: 2px;
+  border-radius: 2px;
+  position: absolute;
+  width: 20px;
+
+  visibility: hidden;
+  cursor: pointer;
+  pointer-events: all;
+  transition: background-color 0.3s;
+}
+.taskEditBtn {
+  right: 0;
+  top: 0;
+}
+
+.taskDeleteBtn {
+  right: 0;
+  top: 20px;
+}
+
+.btnContainer:hover .taskEditBtn {
+  visibility: visible;
+}
+
+.btnContainer:hover .taskDeleteBtn {
+  visibility: visible;
+}
+
+.taskEditBtn:hover {
+  background-color: #dbdbdb;
+}
+
+.taskDeleteBtn:hover {
+  background-color: #af4c4c86;
+}
+
+.addCardBtnCreate {
+  width: 100%;
+  margin-top: 30px;
+  min-height: 40px;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  background-color: rgb(0, 121, 191);
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  color: rgb(255, 255, 255);
+  opacity: 1;
+  transition: opacity 0.3;
+  cursor: pointer;
+}
+
+.addCardBtnCreate:hover,
+.addCardBtnCreate:active,
+.addCardBtnCreate:focus {
+  opacity: 0.8;
+}
+
+.messageError {
+  height: 15px;
+  color: #f38080;
+  font-size: 14px;
+  display: inline-block;
+  width: 100%;
+  text-align: left;
+}
+
+.btnYes,
+.btnNo {
+  margin-top: 10px;
+  border: none;
+  height: 30px;
+  width: calc(50% - 6px);
+  border-radius: 3px;
+  color: #fff;
+  opacity: 1;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+
+.btnYes {
+  background-color: #4caf50;
+  margin-right: 3px;
+}
+
+.btnNo {
+  background-color: #af4c4c;
+  margin-left: 3px;
+}
+
+.btnNo:hover,
+.btnYes:hover {
+  opacity: 0.9;
+}
+
+.columnContainer {
+  -webkit-text-size-adjust: 100%;
+  color: #172b4d;
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  user-select: none;
+  box-sizing: border-box;
+  display: inline-block;
+  max-height: calc(100vh - 400px);
+  margin: 0 4px;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 272px;
+  scroll-snap-align: center;
+  margin-left: 12px;
+}
+
+.column {
+  -webkit-text-size-adjust: 100%;
+  color: #172b4d;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  user-select: none;
+  background-color: #ebecf0;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  position: relative;
+  white-space: normal;
+  width: 100%;
+}
